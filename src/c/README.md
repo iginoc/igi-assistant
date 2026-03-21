@@ -118,3 +118,4 @@ To use all features, add the following to your `configuration.yaml` or create th
 
 **Author:** Igino
 **License:** MIT
+
