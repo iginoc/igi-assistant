@@ -1,0 +1,66 @@
+{
+  "name": "orologio-hassio",
+  "author": "Igino",
+  "version": "1.1.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "Menu Hassio",
+    "uuid": "9050790d-9d97-46ec-85dd-c0f776d02eea",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "basalt",
+      "aplite"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "capabilities": [
+      "configurable"
+    ],
+    "messageKeys": [
+      "targetDate"
+    ],
+    "resources": {
+      "media": [
+        {
+          "type": "bitmap",
+          "name": "ICON_ON",
+          "file": "images/icon_bulb_on.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "ICON_OFF",
+          "file": "images/icon_bulb_off.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "ICON_UNAVAILABLE",
+          "file": "images/icon_unavailable.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "IMAGE_E_UP",
+          "file": "images/e-up.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "ICON_BULB_ON",
+          "file": "images/icon_bulb_on.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "LOGO_SPLASH",
+          "file": "images/logo_splash.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "IMAGE_LAMP",
+          "file": "images/lamp.png"
+        }
+      ]
+    }
+  }
+}

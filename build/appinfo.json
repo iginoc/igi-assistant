@@ -1,0 +1,66 @@
+{
+    "displayName": "Menu Hassio",
+    "uuid": "9050790d-9d97-46ec-85dd-c0f776d02eea",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+        "basalt",
+        "aplite"
+    ],
+    "watchapp": {
+        "watchface": false
+    },
+    "capabilities": [
+        "configurable"
+    ],
+    "messageKeys": {
+        "targetDate": 10000
+    },
+    "resources": {
+        "media": [
+            {
+                "type": "bitmap",
+                "name": "ICON_ON",
+                "file": "images/icon_bulb_on.png"
+            },
+            {
+                "type": "bitmap",
+                "name": "ICON_OFF",
+                "file": "images/icon_bulb_off.png"
+            },
+            {
+                "type": "bitmap",
+                "name": "ICON_UNAVAILABLE",
+                "file": "images/icon_unavailable.png"
+            },
+            {
+                "type": "bitmap",
+                "name": "IMAGE_E_UP",
+                "file": "images/e-up.png"
+            },
+            {
+                "type": "bitmap",
+                "name": "ICON_BULB_ON",
+                "file": "images/icon_bulb_on.png"
+            },
+            {
+                "type": "bitmap",
+                "name": "LOGO_SPLASH",
+                "file": "images/logo_splash.png"
+            },
+            {
+                "type": "bitmap",
+                "name": "IMAGE_LAMP",
+                "file": "images/lamp.png"
+            }
+        ]
+    },
+    "name": "orologio-hassio",
+    "shortName": "Menu Hassio",
+    "longName": "Menu Hassio",
+    "versionLabel": "1.0",
+    "companyName": "Igino",
+    "appKeys": {
+        "targetDate": 10000
+    }
+}

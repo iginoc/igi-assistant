@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Configurazione Data</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; padding: 20px; text-align: center; }
+    input[type="checkbox"], input[type="radio"] { width: auto; margin-right: 10px; transform: scale(1.2); }
+    .light-item { text-align: left; padding: 10px; border-bottom: 1px solid #eee; }
+    button { width: 100%; padding: 15px; background: #FF4700; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #E04000; }
+    .scroll-box { background: #fafafa; border-radius: 8px; padding: 10px; max-height: 200px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <button id="refresh" type="button" style="margin-bottom: 20px; background-color: #666;">Aggiorna</button>
+  <div style="margin: 20px 0;">
+    <h3>URL Home Assistant</h3>
+    <input type="text" id="ha-url" placeholder="Es: http://192.168.1.10:8123" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px;">
+  </div>
+  <div style="margin: 20px 0;">
+    <h3>Token (Long-Lived)</h3>
+    <input type="text" id="ha-token" placeholder="Es: eyJhbGci..." style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px;">
+  </div>
+  <div style="margin: 20px 0;">
+    <h3>Il tuo Nickname</h3>
+    <input type="text" id="nickname" placeholder="Es: Igino" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px;">
+  </div>
+  <div style="margin: 20px 0;">
+    <h3>Seleziona Luci</h3>
+    <div id="lights-list" class="scroll-box">Caricamento luci...</div>
+  </div>
+  <div style="margin: 20px 0;">
+    <h3>Seleziona Sensore (Grafico)</h3>
+    <input type="text" id="sensor-search" placeholder="Cerca sensore..." style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px;">
+    <div id="sensors-list" class="scroll-box">Caricamento sensori...</div>
+  </div>
+  <button id="save" type="button">Salva</button>
+  <script>
+    // --- Configurazione Home Assistant ---
+    // Inserisci qui il tuo URL e il Token a lunga durata
+    var haUrl = ""; 
+    var haToken = "";
+
+    // Recupera le opzioni salvate dall'URL (parametro 'options')
+    function getQueryParam(name) {
+      var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+      return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+    }
+    var savedConfig = {};
+    try {
+      var opts = getQueryParam("options");
+      if (opts) savedConfig = JSON.parse(opts);
+    } catch(e) { console.error("Errore parsing opzioni:", e); }
+    if (savedConfig.nickname) {
+      document.getElementById('nickname').value = savedConfig.nickname;
+    }
+    if (savedConfig.haUrl) {
+      document.getElementById('ha-url').value = savedConfig.haUrl;
+    }
+    if (savedConfig.haToken) {
+      document.getElementById('ha-token').value = savedConfig.haToken;
+    }
+
+    // Fetch lista luci
+    function fetchResources() {
+      var currentUrl = document.getElementById('ha-url').value;
+      var currentToken = document.getElementById('ha-token').value;
+      
+      if (!currentUrl || !currentToken) {
+        document.getElementById("lights-list").textContent = "Inserisci URL e Token per caricare le luci.";
+        return;
+      }
+      
+      fetch(currentUrl + "/api/states", {
+      headers: {
+        "Authorization": "Bearer " + currentToken,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      var container = document.getElementById("lights-list");
+      container.innerHTML = "";
+      
+      var lights = data.filter(e => e.entity_id.startsWith("light."));
+      if (lights.length === 0) { container.textContent = "Nessuna luce trovata."; return; }
+      
+      lights.forEach(light => {
+        var div = document.createElement("div");
+        div.className = "light-item";
+        var cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.value = light.entity_id;
+        cb.id = light.entity_id;
+        if (savedConfig.lights && savedConfig.lights.indexOf(light.entity_id) !== -1) {
+          cb.checked = true;
+        }
+        var lbl = document.createElement("label");
+        lbl.htmlFor = light.entity_id;
+        lbl.textContent = (light.attributes.friendly_name || light.entity_id);
+        div.appendChild(cb);
+        div.appendChild(lbl);
+        container.appendChild(div);
+      });
+
+      // Popola lista sensori
+      var sensorContainer = document.getElementById("sensors-list");
+      sensorContainer.innerHTML = "";
+      var sensors = data.filter(e => e.entity_id.startsWith("sensor."));
+      
+      if (sensors.length === 0) { sensorContainer.textContent = "Nessun sensore trovato."; }
+      else {
+        sensors.forEach(sensor => {
+          var div = document.createElement("div");
+          div.className = "light-item";
+          var rb = document.createElement("input");
+          rb.type = "radio";
+          rb.name = "selected_sensor";
+          rb.value = sensor.entity_id;
+          rb.id = sensor.entity_id;
+          if (savedConfig.sensor && savedConfig.sensor === sensor.entity_id) {
+            rb.checked = true;
+          }
+          var lbl = document.createElement("label");
+          lbl.htmlFor = sensor.entity_id;
+          var unit = sensor.attributes.unit_of_measurement || "";
+          lbl.textContent = (sensor.attributes.friendly_name || sensor.entity_id) + " (" + sensor.state + unit + ")";
+          div.appendChild(rb);
+          div.appendChild(lbl);
+          sensorContainer.appendChild(div);
+        });
+      }
+    })
+    .catch(err => {
+      console.error("Errore HA Lights:", err);
+      document.getElementById("lights-list").textContent = "Errore caricamento luci.";
+    });
+    }
+    
+    fetchResources();
+
+    // Filtro ricerca sensori
+    document.getElementById("sensor-search").addEventListener("input", function() {
+      var filter = this.value.toLowerCase();
+      var items = document.querySelectorAll("#sensors-list .light-item");
+      items.forEach(function(item) {
+        item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
+      });
+    });
+
+    document.getElementById("refresh").addEventListener("click", function() {
+      fetchResources();
+    });
+
+    document.getElementById("save").addEventListener("click", function() {
+      var btn = document.getElementById("save");
+      btn.textContent = "Salvataggio...";
+      btn.disabled = true;
+      
+      var selectedLights = [];
+      document.querySelectorAll('#lights-list input:checked').forEach(cb => selectedLights.push(cb.value));
+
+      var selectedSensor = document.querySelector('input[name="selected_sensor"]:checked');
+      var sensorVal = selectedSensor ? selectedSensor.value : null;
+      
+      var nickname = document.getElementById("nickname").value;
+      var urlVal = document.getElementById("ha-url").value;
+      var tokenVal = document.getElementById("ha-token").value;
+      var config = { "lights": selectedLights, "sensor": sensorVal, "nickname": nickname, "haUrl": urlVal, "haToken": tokenVal };
+      window.location.href = "pebblejs://close#" + encodeURIComponent(JSON.stringify(config));
+    });
+  </script>
+</body>
+</html>
