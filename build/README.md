@@ -4,7 +4,7 @@
 
 Un'interfaccia di controllo completa per Home Assistant sul tuo smartwatch Pebble. Monitora sensori, controlla le luci, gestisci la musica e chatta con la tua casa, tutto dal tuo polso con un'interfaccia ad alto contrasto e leggibile.
 
----
+------------------------------------
 
 ## 🇮🇹 Italiano
 
