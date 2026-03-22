@@ -58,7 +58,7 @@
     "name": "orologio-hassio",
     "shortName": "Menu Hassio",
     "longName": "Menu Hassio",
-    "versionLabel": "1.0",
+    "versionLabel": "1.1",
     "companyName": "Igino",
     "appKeys": {
         "targetDate": 10000
