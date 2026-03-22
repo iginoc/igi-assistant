@@ -1,0 +1,17 @@
+# Build directory (artefatti di compilazione)
+build/
+
+# Node modules (dipendenze JS)
+node_modules/
+
+# Waf build system (cache e lock files)
+.waf*
+.lock-waf*
+
+# OS generated files (file di sistema inutili)
+.DS_Store
+Thumbs.db
+._*
+
+# Logs
+npm-debug.log
