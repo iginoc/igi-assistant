@@ -47,6 +47,7 @@ static int s_display_order[10]; // Mappa indice menu -> indice s_lights
 // --- Chat Window Variables ---
 static Window *s_chat_window;
 static ScrollLayer *s_chat_scroll_layer;
+static GRect s_chat_bounds;
 #define MAX_CHAT_LAYERS 5
 static TextLayer *s_chat_layers[MAX_CHAT_LAYERS];
 static char *s_chat_texts[MAX_CHAT_LAYERS];
@@ -175,12 +176,13 @@ static void add_chat_message(char *new_text) {
     // Aggiorna offset e altezza totale
     s_chat_content_height += size.h;
     
-    scroll_layer_set_content_size(s_chat_scroll_layer, GSize(144, s_chat_content_height));
+    scroll_layer_set_content_size(s_chat_scroll_layer, GSize(width, s_chat_content_height));
     
-    if (s_chat_content_height > 168) {
-      scroll_layer_set_content_offset(s_chat_scroll_layer, GPoint(0, -(s_chat_content_height - 168)), true);
+    int16_t view_h = s_chat_bounds.size.h;
+    if (s_chat_content_height > view_h) {
+      scroll_layer_set_content_offset(s_chat_scroll_layer, GPoint(0, -(s_chat_content_height - view_h)), true);
     } else {
-      scroll_layer_set_content_offset(s_chat_scroll_layer, GPoint(0, 0), true);
+      scroll_layer_set_content_offset(s_chat_scroll_layer, GPoint(0, PBL_IF_ROUND_ELSE(view_h/4, 0)), true);
     }
 
     // Vibrazione all'arrivo di un nuovo messaggio
@@ -216,7 +218,7 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
 static void chat_up_click_handler(ClickRecognizerRef recognizer, void *context) {
   reset_auto_close_timer();
   GPoint offset = scroll_layer_get_content_offset(s_chat_scroll_layer);
-  offset.y += 168 / 2;
+  offset.y += s_chat_bounds.size.h / 2;
   if (offset.y > 0) offset.y = 0;
   scroll_layer_set_content_offset(s_chat_scroll_layer, offset, true);
 }
@@ -224,11 +226,11 @@ static void chat_up_click_handler(ClickRecognizerRef recognizer, void *context) 
 static void chat_down_click_handler(ClickRecognizerRef recognizer, void *context) {
   GPoint offset = scroll_layer_get_content_offset(s_chat_scroll_layer);
   GSize size = scroll_layer_get_content_size(s_chat_scroll_layer);
-  int view_h = 168; 
+  int view_h = s_chat_bounds.size.h; 
   int min_y = view_h - size.h;
   if (min_y > 0) min_y = 0;
   
-  offset.y -= 168 / 2;
+  offset.y -= view_h / 2;
   if (offset.y < min_y) offset.y = min_y;
   scroll_layer_set_content_offset(s_chat_scroll_layer, offset, true);
 }
@@ -300,13 +302,13 @@ static void chat_click_config_provider(void *context) {
 
 static void chat_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
-  GRect bounds = layer_get_bounds(window_layer);
+  s_chat_bounds = layer_get_bounds(window_layer);
 
   // Pulisce il buffer all'apertura
   s_chat_layer_count = 0;
   s_chat_content_height = 0;
 
-  s_chat_scroll_layer = scroll_layer_create(bounds);
+  s_chat_scroll_layer = scroll_layer_create(s_chat_bounds);
   
   // Impostiamo il provider personalizzato invece di quello standard di ScrollLayer
   window_set_click_config_provider(window, chat_click_config_provider);
@@ -422,7 +424,7 @@ static void music_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_music_title_layer));
 
   // Layer Controlli (in basso)
-  s_music_layer = text_layer_create(GRect(0, 80, bounds.size.w, bounds.size.h - 80));
+  s_music_layer = text_layer_create(GRect(0, 80, bounds.size.w, bounds.size.h - (PBL_IF_ROUND_ELSE(100, 80))));
   text_layer_set_text(s_music_layer, "SU: < / Vol+\nSEL: Play/Pausa\nGIU: > / Vol-");
   text_layer_set_text_alignment(s_music_layer, GTextAlignmentCenter);
   text_layer_set_font(s_music_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
@@ -457,7 +459,11 @@ static const AnimationImplementation s_gauge_anim_impl = {
 
 static void chart_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
-  int thickness = 22;
+  // Ridimensiona lo spessore del gauge in base alla dimensione dello schermo
+  int thickness = bounds.size.w / 7;
+  
+  // Su schermi rotondi, restringiamo leggermente il raggio per non toccare i bordi
+  GRect inset_bounds = PBL_IF_ROUND_ELSE(grect_inset(bounds, GEdgeInsets(5)), bounds);
   
   // Angoli per il semicerchio superiore (da ore 9 a ore 3 in senso orario)
   int32_t start_angle = TRIG_MAX_ANGLE * 3 / 4;
@@ -466,40 +472,40 @@ static void chart_update_proc(Layer *layer, GContext *ctx) {
   #if defined(PBL_COLOR)
   // 1. Disegna i segmenti di severità a spessore pieno (riempiono tutto il semicerchio)
   graphics_context_set_fill_color(ctx, GColorGreen);
-  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle, start_angle + (total_span / 2));
+  graphics_fill_radial(ctx, inset_bounds, GOvalScaleModeFitCircle, thickness, start_angle, start_angle + (total_span / 2));
   
   graphics_context_set_fill_color(ctx, GColorYellow);
-  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle + (total_span / 2), start_angle + (3 * total_span / 4));
+  graphics_fill_radial(ctx, inset_bounds, GOvalScaleModeFitCircle, thickness, start_angle + (total_span / 2), start_angle + (3 * total_span / 4));
   
   graphics_context_set_fill_color(ctx, GColorRed);
-  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle + (3 * total_span / 4), start_angle + total_span);
+  graphics_fill_radial(ctx, inset_bounds, GOvalScaleModeFitCircle, thickness, start_angle + (3 * total_span / 4), start_angle + total_span);
   #else
   // 1. Disegna i segmenti con tre tonalità distinte (Bianco, Grigio, Nero)
   // Su Pebble B&W, Light e Dark Gray sono identici, quindi usiamo il Bianco per la zona "safe".
   // Primo segmento: Bianco
   graphics_context_set_fill_color(ctx, GColorWhite);
-  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle, start_angle + (total_span / 2));
+  graphics_fill_radial(ctx, inset_bounds, GOvalScaleModeFitCircle, thickness, start_angle, start_angle + (total_span / 2));
   
   // Secondo segmento: Grigio (Dithering 50%)
   graphics_context_set_fill_color(ctx, GColorLightGray);
-  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle + (total_span / 2), start_angle + (3 * total_span / 4));
+  graphics_fill_radial(ctx, inset_bounds, GOvalScaleModeFitCircle, thickness, start_angle + (total_span / 2), start_angle + (3 * total_span / 4));
   
   // Terzo segmento: Nero pieno
   graphics_context_set_fill_color(ctx, GColorBlack);
-  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle + (3 * total_span / 4), start_angle + total_span);
+  graphics_fill_radial(ctx, inset_bounds, GOvalScaleModeFitCircle, thickness, start_angle + (3 * total_span / 4), start_angle + total_span);
 
   // Aggiungiamo un contorno nero per definire la forma del gauge (essenziale per vedere il bianco)
   graphics_context_set_stroke_color(ctx, GColorBlack);
   graphics_context_set_stroke_width(ctx, 1);
-  graphics_draw_arc(ctx, bounds, GOvalScaleModeFitCircle, start_angle, start_angle + total_span);
-  graphics_draw_arc(ctx, grect_inset(bounds, GEdgeInsets(thickness)), GOvalScaleModeFitCircle, start_angle, start_angle + total_span);
-  graphics_draw_line(ctx, GPoint(0, bounds.size.h / 2), GPoint(thickness, bounds.size.h / 2));
-  graphics_draw_line(ctx, GPoint(bounds.size.w - thickness, bounds.size.h / 2), GPoint(bounds.size.w, bounds.size.h / 2));
+  graphics_draw_arc(ctx, inset_bounds, GOvalScaleModeFitCircle, start_angle, start_angle + total_span);
+  graphics_draw_arc(ctx, grect_inset(inset_bounds, GEdgeInsets(thickness)), GOvalScaleModeFitCircle, start_angle, start_angle + total_span);
+  graphics_draw_line(ctx, GPoint(inset_bounds.origin.x, inset_bounds.size.h / 2), GPoint(inset_bounds.origin.x + thickness, inset_bounds.size.h / 2));
+  graphics_draw_line(ctx, GPoint(inset_bounds.origin.x + inset_bounds.size.w - thickness, inset_bounds.size.h / 2), GPoint(inset_bounds.origin.x + inset_bounds.size.w, inset_bounds.size.h / 2));
   #endif
 
   // 2. Disegna i segni di spunta (ticks) bianchi per separare i segmenti
-  GPoint center = GPoint(bounds.size.w / 2, bounds.size.h / 2);
-  uint16_t radius = bounds.size.w / 2;
+  GPoint center = GPoint(inset_bounds.origin.x + inset_bounds.size.w / 2, inset_bounds.origin.y + inset_bounds.size.h / 2);
+  uint16_t radius = inset_bounds.size.w / 2;
   
   // Sui modelli B&W usiamo il nero per i ticks, altrimenti sarebbero invisibili sul bianco/grigio
   graphics_context_set_stroke_color(ctx, PBL_IF_COLOR_ELSE(GColorWhite, GColorBlack));
@@ -739,7 +745,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
   }
   graphics_fill_rect(ctx, layer_get_bounds(cell_layer), 0, GCornerNone);
 
-  menu_cell_basic_draw(ctx, cell_layer, s_lights[index].name, s_lights[index].state, NULL);
+  menu_cell_basic_draw(ctx, cell_layer, s_lights[index].name, s_lights[index].state, PBL_IF_ROUND_ELSE(NULL, NULL));
 }
 
 static void menu_scroll_up_handler(ClickRecognizerRef recognizer, void *context) {
@@ -836,15 +842,15 @@ static void prv_window_load(Window *window) {
   layer_add_child(window_layer, s_chart_layer);
 
   // Layer Sensore (Sotto il grafico, al centro)
-  s_countdown_layer = text_layer_create(GRect(0, 85, bounds.size.w, 40));
+  s_countdown_layer = text_layer_create(GRect(0, bounds.size.h / 2, bounds.size.w, 40));
   text_layer_set_background_color(s_countdown_layer, GColorClear);
   text_layer_set_text_color(s_countdown_layer, GColorBlack);
-  text_layer_set_font(s_countdown_layer, fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK));
+  text_layer_set_font(s_countdown_layer, fonts_get_system_font(PBL_IF_ROUND_ELSE(FONT_KEY_GOTHIC_28_BOLD, FONT_KEY_BITHAM_30_BLACK)));
   text_layer_set_text_alignment(s_countdown_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_countdown_layer));
   
   // Layer Nome Sensore (In basso)
-  s_sensor_name_layer = text_layer_create(GRect(0, 125, bounds.size.w, 20));
+  s_sensor_name_layer = text_layer_create(GRect(0, (bounds.size.h / 2) + 40, bounds.size.w, 20));
   text_layer_set_background_color(s_sensor_name_layer, GColorClear);
   text_layer_set_text_color(s_sensor_name_layer, GColorBlack);
   text_layer_set_font(s_sensor_name_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));

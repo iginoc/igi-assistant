@@ -7,7 +7,7 @@
 *   **Light Control:** Quick menu to toggle selected lights on and off.
 *   **Home Assistant Chat:** Send and receive text messages to Home Assistant (requires `input_text`). Supports voice dictation (on microphone-enabled models) and customizable canned messages.
 *   **Music Control:** Control active media players (Play/Pause, Volume, Next/Prev Track).
-*   **Accessible Design:** High-contrast black-on-white interface with color support for modern Pebble models (Time, Time Round, P2).
+*   **Universal Compatibility:** High-contrast interface with optimized layouts for all Pebble models, including rectangular (Classic, Time, P2) and circular (Pebble Time Round) displays.
 
 ### Home Assistant Requirements
 To use all features, add the following to your `configuration.yaml` or create the helpers via UI:
