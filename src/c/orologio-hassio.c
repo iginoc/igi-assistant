@@ -23,6 +23,11 @@ static Window *s_music_window;
 
 static TextLayer *s_countdown_layer;
 static TextLayer *s_sensor_name_layer;
+static Layer *s_chart_layer;
+static Animation *s_gauge_animation;
+static int s_target_percent = 0;
+static int s_start_percent = 0;
+static int s_sensor_percent = 0;
 static char s_sensor_value_str[32] = "Caricamento...";
 static char s_sensor_name_str[64] = "";
 
@@ -439,10 +444,179 @@ static void music_window_unload(Window *window) {
 }
 // -----------------------------
 
+static void gauge_anim_update(Animation *anim, const AnimationProgress progress) {
+  s_sensor_percent = s_start_percent + ((s_target_percent - s_start_percent) * (int)progress) / ANIMATION_NORMALIZED_MAX;
+  if (s_chart_layer) {
+    layer_mark_dirty(s_chart_layer);
+  }
+}
+
+static const AnimationImplementation s_gauge_anim_impl = {
+  .update = gauge_anim_update
+};
+
+static void chart_update_proc(Layer *layer, GContext *ctx) {
+  GRect bounds = layer_get_bounds(layer);
+  int thickness = 22;
+  
+  // Angoli per il semicerchio superiore (da ore 9 a ore 3 in senso orario)
+  int32_t start_angle = TRIG_MAX_ANGLE * 3 / 4;
+  int32_t total_span = TRIG_MAX_ANGLE / 2;
+
+  #if defined(PBL_COLOR)
+  // 1. Disegna i segmenti di severità a spessore pieno (riempiono tutto il semicerchio)
+  graphics_context_set_fill_color(ctx, GColorGreen);
+  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle, start_angle + (total_span / 2));
+  
+  graphics_context_set_fill_color(ctx, GColorYellow);
+  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle + (total_span / 2), start_angle + (3 * total_span / 4));
+  
+  graphics_context_set_fill_color(ctx, GColorRed);
+  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle + (3 * total_span / 4), start_angle + total_span);
+  #else
+  // 1. Disegna i segmenti con tre tonalità distinte (Bianco, Grigio, Nero)
+  // Su Pebble B&W, Light e Dark Gray sono identici, quindi usiamo il Bianco per la zona "safe".
+  // Primo segmento: Bianco
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle, start_angle + (total_span / 2));
+  
+  // Secondo segmento: Grigio (Dithering 50%)
+  graphics_context_set_fill_color(ctx, GColorLightGray);
+  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle + (total_span / 2), start_angle + (3 * total_span / 4));
+  
+  // Terzo segmento: Nero pieno
+  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_fill_radial(ctx, bounds, GOvalScaleModeFitCircle, thickness, start_angle + (3 * total_span / 4), start_angle + total_span);
+
+  // Aggiungiamo un contorno nero per definire la forma del gauge (essenziale per vedere il bianco)
+  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_context_set_stroke_width(ctx, 1);
+  graphics_draw_arc(ctx, bounds, GOvalScaleModeFitCircle, start_angle, start_angle + total_span);
+  graphics_draw_arc(ctx, grect_inset(bounds, GEdgeInsets(thickness)), GOvalScaleModeFitCircle, start_angle, start_angle + total_span);
+  graphics_draw_line(ctx, GPoint(0, bounds.size.h / 2), GPoint(thickness, bounds.size.h / 2));
+  graphics_draw_line(ctx, GPoint(bounds.size.w - thickness, bounds.size.h / 2), GPoint(bounds.size.w, bounds.size.h / 2));
+  #endif
+
+  // 2. Disegna i segni di spunta (ticks) bianchi per separare i segmenti
+  GPoint center = GPoint(bounds.size.w / 2, bounds.size.h / 2);
+  uint16_t radius = bounds.size.w / 2;
+  
+  // Sui modelli B&W usiamo il nero per i ticks, altrimenti sarebbero invisibili sul bianco/grigio
+  graphics_context_set_stroke_color(ctx, PBL_IF_COLOR_ELSE(GColorWhite, GColorBlack));
+  graphics_context_set_stroke_width(ctx, 2);
+  
+  int32_t tick_angles[2] = {
+    start_angle + (total_span / 2),
+    start_angle + (3 * total_span / 4)
+  };
+
+  for (int i = 0; i < 2; i++) {
+    GPoint p1 = {
+      .x = (int16_t)(sin_lookup(tick_angles[i]) * (int32_t)(radius - thickness) / TRIG_MAX_RATIO) + center.x,
+      .y = (int16_t)(-cos_lookup(tick_angles[i]) * (int32_t)(radius - thickness) / TRIG_MAX_RATIO) + center.y,
+    };
+    GPoint p2 = {
+      .x = (int16_t)(sin_lookup(tick_angles[i]) * (int32_t)radius / TRIG_MAX_RATIO) + center.x,
+      .y = (int16_t)(-cos_lookup(tick_angles[i]) * (int32_t)radius / TRIG_MAX_RATIO) + center.y,
+    };
+    graphics_draw_line(ctx, p1, p2);
+  }
+
+  // 3. Disegna la lancetta (needle)
+  int32_t val_angle = start_angle + (total_span * s_sensor_percent / 100);
+  // Clamp dell'angolo per sicurezza
+  if (s_sensor_percent >= 100) val_angle = start_angle + total_span;
+  if (s_sensor_percent <= 0) val_angle = start_angle;
+  // Calcoliamo la posizione della punta della lancetta usando seno e coseno
+  GPoint needle_end = {
+    .x = (int16_t)(sin_lookup(val_angle) * (int32_t)radius / TRIG_MAX_RATIO) + center.x,
+    .y = (int16_t)(-cos_lookup(val_angle) * (int32_t)radius / TRIG_MAX_RATIO) + center.y,
+  };
+
+  // Disegno della lancetta bianca con bordo nero per visibilità
+  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_context_set_stroke_width(ctx, 8);
+  graphics_draw_line(ctx, center, needle_end);
+  
+  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_context_set_stroke_width(ctx, 4);
+  graphics_draw_line(ctx, center, needle_end);
+
+  // Perno centrale della lancetta
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_circle(ctx, center, 5);
+}
+
 static void update_sensor_display() {
-  // Mostra il valore del sensore
-  text_layer_set_text(s_countdown_layer, s_sensor_value_str);
+  // Implementazione manuale di parsing e arrotondamento per evitare atof()
+  // che causa errori di linker su Pebble SDK
+  int integer_part = 0;
+  int decimal_digit = 0;
+  char *unit = "";
+  
+  char *p = s_sensor_value_str;
+  // Salta eventuali spazi iniziali
+  while (*p == ' ') p++;
+
+  // Estrae la parte intera
+  while (*p >= '0' && *p <= '9') {
+    integer_part = (integer_part * 10) + (*p - '0');
+    p++;
+  }
+
+  // Se c'è un punto o una virgola, guarda la prima cifra decimale per arrotondare
+  if (*p == '.' || *p == ',') {
+    p++;
+    if (*p >= '0' && *p <= '9') {
+      decimal_digit = *p - '0';
+      p++;
+    }
+    // Salta eventuali altri decimali
+    while (*p >= '0' && *p <= '9') p++;
+  }
+
+  // Arrotondamento (se decimale >= 5, aggiungi 1)
+  int rounded_val = (decimal_digit >= 5) ? integer_part + 1 : integer_part;
+
+  // Il resto della stringa è l'unità di misura
+  while (*p == ' ') p++; // Salta spazi tra numero e unità
+  unit = p;
+
+  // Ricostruiamo la stringa senza decimali per il display
+  static char s_rounded_val_str[32];
+  if (unit && *unit != '\0') {
+    snprintf(s_rounded_val_str, sizeof(s_rounded_val_str), "%d %s", rounded_val, unit);
+  } else {
+    snprintf(s_rounded_val_str, sizeof(s_rounded_val_str), "%d", rounded_val);
+  }
+
+  text_layer_set_text(s_countdown_layer, s_rounded_val_str);
   text_layer_set_text(s_sensor_name_layer, s_sensor_name_str);
+  
+  // Calcola la percentuale target
+  int new_percent = 0;
+  if (rounded_val > 100) {
+    new_percent = (rounded_val * 100) / 4000;
+  } else {
+    new_percent = rounded_val;
+  }
+  if (new_percent < 0) new_percent = 0;
+  if (new_percent > 100) new_percent = 100;
+
+  // Avvia l'animazione fluida se il valore è cambiato
+  if (new_percent != s_target_percent) {
+    if (s_gauge_animation) {
+      animation_unschedule(s_gauge_animation);
+    }
+    s_start_percent = s_sensor_percent; // Parte dalla posizione attuale della lancetta
+    s_target_percent = new_percent;
+
+    s_gauge_animation = animation_create();
+    animation_set_duration(s_gauge_animation, 800); // 800ms per un movimento naturale
+    animation_set_curve(s_gauge_animation, AnimationCurveEaseInOut);
+    animation_set_implementation(s_gauge_animation, &s_gauge_anim_impl);
+    animation_schedule(s_gauge_animation);
+  }
 }
 
 static void trigger_light_toggle(int row) {
@@ -656,16 +830,21 @@ static void prv_window_load(Window *window) {
   // Imposta sfondo bianco
   window_set_background_color(window, GColorWhite);
 
-  // Layer Sensore (Alto)
-  s_countdown_layer = text_layer_create(GRect(0, 0, bounds.size.w, 40));
+  // Crea il layer per il Gauge (In alto, occupa la metà superiore)
+  s_chart_layer = layer_create(GRect(0, 0, bounds.size.w, bounds.size.w));
+  layer_set_update_proc(s_chart_layer, chart_update_proc);
+  layer_add_child(window_layer, s_chart_layer);
+
+  // Layer Sensore (Sotto il grafico, al centro)
+  s_countdown_layer = text_layer_create(GRect(0, 85, bounds.size.w, 40));
   text_layer_set_background_color(s_countdown_layer, GColorClear);
   text_layer_set_text_color(s_countdown_layer, GColorBlack);
   text_layer_set_font(s_countdown_layer, fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK));
   text_layer_set_text_alignment(s_countdown_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_countdown_layer));
   
-  // Layer Nome Sensore (Sotto il valore)
-  s_sensor_name_layer = text_layer_create(GRect(0, 40, bounds.size.w, 20));
+  // Layer Nome Sensore (In basso)
+  s_sensor_name_layer = text_layer_create(GRect(0, 125, bounds.size.w, 20));
   text_layer_set_background_color(s_sensor_name_layer, GColorClear);
   text_layer_set_text_color(s_sensor_name_layer, GColorBlack);
   text_layer_set_font(s_sensor_name_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
@@ -679,6 +858,11 @@ static void prv_window_load(Window *window) {
 static void prv_window_unload(Window *window) {
   text_layer_destroy(s_countdown_layer);
   text_layer_destroy(s_sensor_name_layer);
+  layer_destroy(s_chart_layer);
+  if (s_gauge_animation) {
+    animation_unschedule(s_gauge_animation);
+    s_gauge_animation = NULL;
+  }
   if (s_feedback_timer) {
     app_timer_cancel(s_feedback_timer);
     s_feedback_timer = NULL;

@@ -1,4 +1,4 @@
-# project  configured on Sun Mar 22 19:08:26 2026 by
+# project  configured on Fri Apr 17 07:22:30 2026 by
 # waf 2.1.4 (abi 20, python 30d07f0 on linux)
 # using /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/waf configure
 #
@@ -18,7 +18,7 @@ Found Pebble SDK for basalt in:
 ----------------------------------------
 Checking for program 'gcc, cc'
 arm-none-eabi-gcc
-find program=['gcc', 'cc'] paths=['/var/tmp/pebble-sdk/SDKs/4.9.127/toolchain/moddable-tools', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin', '/home/igino/.local/share/uv/tools/pebble-tool/lib/python3.13/site-packages/pebble_tool/commands/sdk', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/bin', '/home/igino/.config/Code/User/globalStorage/github.copilot-chat/debugCommand', '/home/igino/.config/Code/User/globalStorage/github.copilot-chat/copilotCli', '/home/igino/.local/bin', '/home/igino/.local/bin', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/usr/local/games', '/snap/bin', '/snap/bin', '/home/igino/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'] var='CC' -> ['arm-none-eabi-gcc']
+find program=['gcc', 'cc'] paths=['/var/tmp/pebble-sdk/SDKs/4.9.127/toolchain/moddable-tools', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin', '/home/igino/.local/share/uv/tools/pebble-tool/lib/python3.13/site-packages/pebble_tool/commands/sdk', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/bin', '/home/igino/.local/bin', '/home/igino/.local/bin', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/usr/local/games', '/snap/bin', '/snap/bin', '/home/igino/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'] var='CC' -> ['arm-none-eabi-gcc']
 ['arm-none-eabi-gcc', '-dM', '-E', '-']
 out: #define __DBL_MIN_EXP__ (-1021)
 #define __HQ_FBIT__ 15
@@ -427,14 +427,14 @@ out: #define __DBL_MIN_EXP__ (-1021)
 ----------------------------------------
 Checking for program 'ar'
 arm-none-eabi-ar
-find program=['ar'] paths=['/var/tmp/pebble-sdk/SDKs/4.9.127/toolchain/moddable-tools', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin', '/home/igino/.local/share/uv/tools/pebble-tool/lib/python3.13/site-packages/pebble_tool/commands/sdk', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/bin', '/home/igino/.config/Code/User/globalStorage/github.copilot-chat/debugCommand', '/home/igino/.config/Code/User/globalStorage/github.copilot-chat/copilotCli', '/home/igino/.local/bin', '/home/igino/.local/bin', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/usr/local/games', '/snap/bin', '/snap/bin', '/home/igino/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'] var='AR' -> ['arm-none-eabi-ar']
+find program=['ar'] paths=['/var/tmp/pebble-sdk/SDKs/4.9.127/toolchain/moddable-tools', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin', '/home/igino/.local/share/uv/tools/pebble-tool/lib/python3.13/site-packages/pebble_tool/commands/sdk', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/bin', '/home/igino/.local/bin', '/home/igino/.local/bin', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/usr/local/games', '/snap/bin', '/snap/bin', '/home/igino/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'] var='AR' -> ['arm-none-eabi-ar']
 ----------------------------------------
 Found Pebble SDK for aplite in:
 /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite
 ----------------------------------------
 Checking for program 'gcc, cc'
 arm-none-eabi-gcc
-find program=['gcc', 'cc'] paths=['/var/tmp/pebble-sdk/SDKs/4.9.127/toolchain/moddable-tools', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin', '/home/igino/.local/share/uv/tools/pebble-tool/lib/python3.13/site-packages/pebble_tool/commands/sdk', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/bin', '/home/igino/.config/Code/User/globalStorage/github.copilot-chat/debugCommand', '/home/igino/.config/Code/User/globalStorage/github.copilot-chat/copilotCli', '/home/igino/.local/bin', '/home/igino/.local/bin', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/usr/local/games', '/snap/bin', '/snap/bin', '/home/igino/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'] var='CC' -> ['arm-none-eabi-gcc']
+find program=['gcc', 'cc'] paths=['/var/tmp/pebble-sdk/SDKs/4.9.127/toolchain/moddable-tools', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin', '/home/igino/.local/share/uv/tools/pebble-tool/lib/python3.13/site-packages/pebble_tool/commands/sdk', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/bin', '/home/igino/.local/bin', '/home/igino/.local/bin', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/usr/local/games', '/snap/bin', '/snap/bin', '/home/igino/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'] var='CC' -> ['arm-none-eabi-gcc']
 ['arm-none-eabi-gcc', '-dM', '-E', '-']
 out: #define __DBL_MIN_EXP__ (-1021)
 #define __HQ_FBIT__ 15
@@ -843,4 +843,4 @@ out: #define __DBL_MIN_EXP__ (-1021)
 ----------------------------------------
 Checking for program 'ar'
 arm-none-eabi-ar
-find program=['ar'] paths=['/var/tmp/pebble-sdk/SDKs/4.9.127/toolchain/moddable-tools', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin', '/home/igino/.local/share/uv/tools/pebble-tool/lib/python3.13/site-packages/pebble_tool/commands/sdk', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/bin', '/home/igino/.config/Code/User/globalStorage/github.copilot-chat/debugCommand', '/home/igino/.config/Code/User/globalStorage/github.copilot-chat/copilotCli', '/home/igino/.local/bin', '/home/igino/.local/bin', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/usr/local/games', '/snap/bin', '/snap/bin', '/home/igino/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'] var='AR' -> ['arm-none-eabi-ar']
+find program=['ar'] paths=['/var/tmp/pebble-sdk/SDKs/4.9.127/toolchain/moddable-tools', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin', '/home/igino/.local/share/uv/tools/pebble-tool/lib/python3.13/site-packages/pebble_tool/commands/sdk', '/home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/bin', '/home/igino/.local/bin', '/home/igino/.local/bin', '/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/usr/local/games', '/snap/bin', '/snap/bin', '/home/igino/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'] var='AR' -> ['arm-none-eabi-ar']
