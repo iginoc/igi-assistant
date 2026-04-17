@@ -55,10 +55,10 @@
             }
         ]
     },
-    "name": "orologio-hassio",
+    "name": "menu-hassio",
     "shortName": "Menu Hassio",
     "longName": "Menu Hassio",
-    "versionLabel": "1.1",
+    "versionLabel": "1.2",
     "companyName": "Igino",
     "appKeys": {
         "targetDate": 10000
