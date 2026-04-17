@@ -4,8 +4,12 @@
     "sdkVersion": "3",
     "enableMultiJS": true,
     "targetPlatforms": [
+        "aplite",
         "basalt",
-        "aplite"
+        "chalk",
+        "diorite",
+        "emery",
+        "gabbro"
     ],
     "watchapp": {
         "watchface": false

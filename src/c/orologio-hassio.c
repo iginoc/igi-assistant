@@ -157,8 +157,10 @@ static void add_chat_message(char *new_text) {
       }
     }
     
+    int16_t width = s_chat_bounds.size.w;
+
     // Crea un nuovo TextLayer per questo messaggio
-    TextLayer *tl = text_layer_create(GRect(0, s_chat_content_height, 144, 2000));
+    TextLayer *tl = text_layer_create(GRect(0, s_chat_content_height, width, 2000));
     text_layer_set_text(tl, copy);
     text_layer_set_font(tl, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
     text_layer_set_text_alignment(tl, is_me ? GTextAlignmentRight : GTextAlignmentLeft);
@@ -167,7 +169,7 @@ static void add_chat_message(char *new_text) {
 
     // Calcola l'altezza necessaria e ridimensiona il layer
     GSize size = text_layer_get_content_size(tl);
-    text_layer_set_size(tl, GSize(144, size.h));
+    text_layer_set_size(tl, GSize(width, size.h));
     
     scroll_layer_add_child(s_chat_scroll_layer, text_layer_get_layer(tl));
     s_chat_texts[s_chat_layer_count] = copy;
@@ -313,7 +315,7 @@ static void chat_window_load(Window *window) {
   // Impostiamo il provider personalizzato invece di quello standard di ScrollLayer
   window_set_click_config_provider(window, chat_click_config_provider);
 
-  scroll_layer_set_content_size(s_chat_scroll_layer, GSize(bounds.size.w, 0));
+  scroll_layer_set_content_size(s_chat_scroll_layer, GSize(s_chat_bounds.size.w, 0));
 
   layer_add_child(window_layer, scroll_layer_get_layer(s_chat_scroll_layer));
 
