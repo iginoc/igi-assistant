@@ -451,7 +451,7 @@ static void music_window_load(Window *window) {
 
   // Layer Controlli (in basso)
   s_music_layer = text_layer_create(GRect(0, 80, bounds.size.w, bounds.size.h - (PBL_IF_ROUND_ELSE(100, 80))));
-  text_layer_set_text(s_music_layer, "SU: < / Vol+\nSEL: Play/Pausa\nGIU: > / Vol-");
+  text_layer_set_text(s_music_layer, "UP: < / Vol+\nSEL: Play/Pause\nDOWN: > / Vol-");
   text_layer_set_text_alignment(s_music_layer, GTextAlignmentCenter);
   text_layer_set_font(s_music_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
   text_layer_set_background_color(s_music_layer, GColorBlack);
@@ -739,7 +739,8 @@ static void update_sensor_display() {
   
   // Calcola la percentuale target
   int new_percent = 0;
-  if (rounded_val > 100) {
+  // Se l'unità contiene 'W' (Watt) o il valore supera 100, usiamo la scala 0-4000
+  if (rounded_val > 100 || strstr(unit, "W") != NULL) {
     new_percent = (rounded_val * 100) / 4000;
   } else {
     new_percent = rounded_val;

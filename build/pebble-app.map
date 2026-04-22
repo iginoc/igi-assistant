@@ -1338,7 +1338,7 @@ LOAD /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc
  .note.gnu.build-id
                 0x00000084       0x24 linker stubs
 
-.text           0x000000a8     0x23e3
+.text           0x000000a8     0x23f8
  *(.text)
  .text          0x000000a8       0x14 /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
  *(.text.*)
@@ -1428,518 +1428,518 @@ LOAD /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc
  .text.up_click_handler
                 0x00001324       0x50 src/c/orologio-hassio.c.49.o
  .text.inbox_received_handler
-                0x00001374      0x4bc src/c/orologio-hassio.c.49.o
+                0x00001374      0x4d0 src/c/orologio-hassio.c.49.o
  .text.chat_window_unload
-                0x00001830       0x54 src/c/orologio-hassio.c.49.o
+                0x00001844       0x54 src/c/orologio-hassio.c.49.o
  .text.chat_up_click_handler
-                0x00001884       0x48 src/c/orologio-hassio.c.49.o
+                0x00001898       0x48 src/c/orologio-hassio.c.49.o
  .text.menu_scroll_down_handler
-                0x000018cc       0x20 src/c/orologio-hassio.c.49.o
+                0x000018e0       0x20 src/c/orologio-hassio.c.49.o
  .text.menu_scroll_up_handler
-                0x000018ec       0x20 src/c/orologio-hassio.c.49.o
+                0x00001900       0x20 src/c/orologio-hassio.c.49.o
  .text.trigger_light_toggle
-                0x0000190c       0x48 src/c/orologio-hassio.c.49.o
+                0x00001920       0x48 src/c/orologio-hassio.c.49.o
  .text.menu_select_callback
-                0x00001954       0x12 src/c/orologio-hassio.c.49.o
- *fill*         0x00001966        0x2 
+                0x00001968       0x12 src/c/orologio-hassio.c.49.o
+ *fill*         0x0000197a        0x2 
  .text.menu_select_click_handler
-                0x00001968       0x24 src/c/orologio-hassio.c.49.o
+                0x0000197c       0x24 src/c/orologio-hassio.c.49.o
  .text.accel_tap_handler
-                0x0000198c      0x120 src/c/orologio-hassio.c.49.o
+                0x000019a0      0x120 src/c/orologio-hassio.c.49.o
  .text.music_send_command
-                0x00001aac       0x40 src/c/orologio-hassio.c.49.o
+                0x00001ac0       0x40 src/c/orologio-hassio.c.49.o
  .text.music_timer_callback
-                0x00001aec        0x4 src/c/orologio-hassio.c.49.o
+                0x00001b00        0x4 src/c/orologio-hassio.c.49.o
  .text.music_down_long_click_handler
-                0x00001af0       0x18 src/c/orologio-hassio.c.49.o
+                0x00001b04       0x18 src/c/orologio-hassio.c.49.o
  .text.music_up_long_click_handler
-                0x00001b08       0x18 src/c/orologio-hassio.c.49.o
+                0x00001b1c       0x18 src/c/orologio-hassio.c.49.o
  .text.music_down_click_handler
-                0x00001b20       0x18 src/c/orologio-hassio.c.49.o
+                0x00001b34       0x18 src/c/orologio-hassio.c.49.o
  .text.music_select_click_handler
-                0x00001b38       0x18 src/c/orologio-hassio.c.49.o
+                0x00001b4c       0x18 src/c/orologio-hassio.c.49.o
  .text.music_up_click_handler
-                0x00001b50       0x18 src/c/orologio-hassio.c.49.o
+                0x00001b64       0x18 src/c/orologio-hassio.c.49.o
  .text.startup.main
-                0x00001b68      0x120 src/c/orologio-hassio.c.49.o
-                0x00001b68                main
+                0x00001b7c      0x120 src/c/orologio-hassio.c.49.o
+                0x00001b7c                main
  .text.accel_tap_service_subscribe
-                0x00001c88        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001c88                accel_tap_service_subscribe
+                0x00001c9c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001c9c                accel_tap_service_subscribe
  .text.accel_tap_service_unsubscribe
-                0x00001c94        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001c94                accel_tap_service_unsubscribe
+                0x00001ca8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ca8                accel_tap_service_unsubscribe
  .text.app_event_loop
-                0x00001ca0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ca0                app_event_loop
- .text.app_log  0x00001cac        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001cac                app_log
+                0x00001cb4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001cb4                app_event_loop
+ .text.app_log  0x00001cc0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001cc0                app_log
  .text.app_message_open
-                0x00001cb8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001cb8                app_message_open
+                0x00001ccc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ccc                app_message_open
  .text.app_timer_cancel
-                0x00001cc4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001cc4                app_timer_cancel
+                0x00001cd8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001cd8                app_timer_cancel
  .text.app_timer_register
-                0x00001cd0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001cd0                app_timer_register
+                0x00001ce4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ce4                app_timer_register
  .text.app_timer_reschedule
-                0x00001cdc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001cdc                app_timer_reschedule
- .text.atoi     0x00001ce8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ce8                atoi
+                0x00001cf0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001cf0                app_timer_reschedule
+ .text.atoi     0x00001cfc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001cfc                atoi
  .text.cos_lookup
-                0x00001cf4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001cf4                cos_lookup
+                0x00001d08        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d08                cos_lookup
  .text.dict_find
-                0x00001d00        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d00                dict_find
+                0x00001d14        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d14                dict_find
  .text.dict_write_cstring
-                0x00001d0c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d0c                dict_write_cstring
+                0x00001d20        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d20                dict_write_cstring
  .text.dict_write_int32
-                0x00001d18        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d18                dict_write_int32
+                0x00001d2c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d2c                dict_write_int32
  .text.dict_write_uint8
-                0x00001d24        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d24                dict_write_uint8
+                0x00001d38        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d38                dict_write_uint8
  .text.fonts_get_system_font
-                0x00001d30        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d30                fonts_get_system_font
- .text.free     0x00001d3c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d3c                free
+                0x00001d44        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d44                fonts_get_system_font
+ .text.free     0x00001d50        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d50                free
  .text.graphics_draw_line
-                0x00001d48        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d48                graphics_draw_line
+                0x00001d5c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d5c                graphics_draw_line
  .text.graphics_fill_circle
-                0x00001d54        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d54                graphics_fill_circle
+                0x00001d68        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d68                graphics_fill_circle
  .text.graphics_fill_rect
-                0x00001d60        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d60                graphics_fill_rect
+                0x00001d74        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d74                graphics_fill_rect
  .text.layer_add_child
-                0x00001d6c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d6c                layer_add_child
+                0x00001d80        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d80                layer_add_child
  .text.layer_create
-                0x00001d78        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d78                layer_create
+                0x00001d8c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d8c                layer_create
  .text.layer_destroy
-                0x00001d84        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d84                layer_destroy
+                0x00001d98        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001d98                layer_destroy
  .text.layer_get_bounds
-                0x00001d90        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d90                layer_get_bounds
+                0x00001da4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001da4                layer_get_bounds
  .text.layer_get_frame
-                0x00001d9c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001d9c                layer_get_frame
+                0x00001db0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001db0                layer_get_frame
  .text.layer_mark_dirty
-                0x00001da8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001da8                layer_mark_dirty
+                0x00001dbc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001dbc                layer_mark_dirty
  .text.layer_set_frame
-                0x00001db4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001db4                layer_set_frame
+                0x00001dc8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001dc8                layer_set_frame
  .text.layer_set_update_proc
-                0x00001dc0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001dc0                layer_set_update_proc
- .text.malloc   0x00001dcc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001dcc                malloc
- .text.memset   0x00001dd8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001dd8                memset
+                0x00001dd4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001dd4                layer_set_update_proc
+ .text.malloc   0x00001de0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001de0                malloc
+ .text.memset   0x00001dec        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001dec                memset
  .text.menu_cell_basic_draw
-                0x00001de4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001de4                menu_cell_basic_draw
+                0x00001df8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001df8                menu_cell_basic_draw
  .text.menu_cell_basic_header_draw
-                0x00001df0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001df0                menu_cell_basic_header_draw
+                0x00001e04        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e04                menu_cell_basic_header_draw
  .text.menu_layer_destroy
-                0x00001dfc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001dfc                menu_layer_destroy
+                0x00001e10        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e10                menu_layer_destroy
  .text.menu_layer_get_layer
-                0x00001e08        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e08                menu_layer_get_layer
+                0x00001e1c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e1c                menu_layer_get_layer
  .text.menu_layer_get_selected_index
-                0x00001e14        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e14                menu_layer_get_selected_index
+                0x00001e28        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e28                menu_layer_get_selected_index
  .text.menu_layer_reload_data
-                0x00001e20        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e20                menu_layer_reload_data
+                0x00001e34        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e34                menu_layer_reload_data
  .text.menu_layer_set_click_config_onto_window
-                0x00001e2c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e2c                menu_layer_set_click_config_onto_window
+                0x00001e40        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e40                menu_layer_set_click_config_onto_window
  .text.menu_layer_set_selected_next
-                0x00001e38        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e38                menu_layer_set_selected_next
+                0x00001e4c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e4c                menu_layer_set_selected_next
  .text.scroll_layer_add_child
-                0x00001e44        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e44                scroll_layer_add_child
+                0x00001e58        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e58                scroll_layer_add_child
  .text.scroll_layer_create
-                0x00001e50        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e50                scroll_layer_create
+                0x00001e64        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e64                scroll_layer_create
  .text.scroll_layer_destroy
-                0x00001e5c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e5c                scroll_layer_destroy
+                0x00001e70        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e70                scroll_layer_destroy
  .text.scroll_layer_get_content_offset
-                0x00001e68        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e68                scroll_layer_get_content_offset
+                0x00001e7c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e7c                scroll_layer_get_content_offset
  .text.scroll_layer_get_content_size
-                0x00001e74        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e74                scroll_layer_get_content_size
+                0x00001e88        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e88                scroll_layer_get_content_size
  .text.scroll_layer_get_layer
-                0x00001e80        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e80                scroll_layer_get_layer
+                0x00001e94        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001e94                scroll_layer_get_layer
  .text.scroll_layer_set_content_offset
-                0x00001e8c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e8c                scroll_layer_set_content_offset
+                0x00001ea0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ea0                scroll_layer_set_content_offset
  .text.scroll_layer_set_content_size
-                0x00001e98        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001e98                scroll_layer_set_content_size
+                0x00001eac        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001eac                scroll_layer_set_content_size
  .text.sin_lookup
-                0x00001ea4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ea4                sin_lookup
+                0x00001eb8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001eb8                sin_lookup
  .text.snprintf
-                0x00001eb0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001eb0                snprintf
- .text.strcpy   0x00001ebc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ebc                strcpy
- .text.strlen   0x00001ec8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ec8                strlen
+                0x00001ec4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ec4                snprintf
+ .text.strcpy   0x00001ed0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ed0                strcpy
+ .text.strlen   0x00001edc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001edc                strlen
  .text.vibes_short_pulse
-                0x00001ed4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ed4                vibes_short_pulse
+                0x00001ee8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ee8                vibes_short_pulse
  .text.window_create
-                0x00001ee0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ee0                window_create
+                0x00001ef4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ef4                window_create
  .text.window_destroy
-                0x00001eec        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001eec                window_destroy
+                0x00001f00        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f00                window_destroy
  .text.window_get_root_layer
-                0x00001ef8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ef8                window_get_root_layer
+                0x00001f0c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f0c                window_get_root_layer
  .text.window_set_click_config_provider
-                0x00001f04        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f04                window_set_click_config_provider
+                0x00001f18        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f18                window_set_click_config_provider
  .text.window_set_window_handlers
-                0x00001f10        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f10                window_set_window_handlers
+                0x00001f24        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f24                window_set_window_handlers
  .text.window_stack_get_top_window
-                0x00001f1c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f1c                window_stack_get_top_window
+                0x00001f30        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f30                window_stack_get_top_window
  .text.window_stack_pop
-                0x00001f28        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f28                window_stack_pop
+                0x00001f3c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f3c                window_stack_pop
  .text.window_stack_pop_all
-                0x00001f34        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f34                window_stack_pop_all
+                0x00001f48        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f48                window_stack_pop_all
  .text.window_stack_push
-                0x00001f40        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f40                window_stack_push
+                0x00001f54        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f54                window_stack_push
  .text.app_message_outbox_begin
-                0x00001f4c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f4c                app_message_outbox_begin
+                0x00001f60        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f60                app_message_outbox_begin
  .text.app_message_outbox_send
-                0x00001f58        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f58                app_message_outbox_send
+                0x00001f6c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f6c                app_message_outbox_send
  .text.app_message_register_inbox_dropped
-                0x00001f64        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f64                app_message_register_inbox_dropped
+                0x00001f78        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f78                app_message_register_inbox_dropped
  .text.app_message_register_inbox_received
-                0x00001f70        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f70                app_message_register_inbox_received
+                0x00001f84        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f84                app_message_register_inbox_received
  .text.app_message_register_outbox_failed
-                0x00001f7c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f7c                app_message_register_outbox_failed
+                0x00001f90        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f90                app_message_register_outbox_failed
  .text.app_message_register_outbox_sent
-                0x00001f88        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f88                app_message_register_outbox_sent
+                0x00001f9c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001f9c                app_message_register_outbox_sent
  .text.window_long_click_subscribe
-                0x00001f94        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001f94                window_long_click_subscribe
+                0x00001fa8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001fa8                window_long_click_subscribe
  .text.window_single_click_subscribe
-                0x00001fa0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001fa0                window_single_click_subscribe
+                0x00001fb4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001fb4                window_single_click_subscribe
  .text.window_single_repeating_click_subscribe
-                0x00001fac        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001fac                window_single_repeating_click_subscribe
+                0x00001fc0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001fc0                window_single_repeating_click_subscribe
  .text.graphics_draw_text
-                0x00001fb8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001fb8                graphics_draw_text
+                0x00001fcc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001fcc                graphics_draw_text
  .text.graphics_context_set_fill_color
-                0x00001fc4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001fc4                graphics_context_set_fill_color
+                0x00001fd8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001fd8                graphics_context_set_fill_color
  .text.graphics_context_set_stroke_color
-                0x00001fd0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001fd0                graphics_context_set_stroke_color
+                0x00001fe4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001fe4                graphics_context_set_stroke_color
  .text.graphics_context_set_text_color
-                0x00001fdc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001fdc                graphics_context_set_text_color
+                0x00001ff0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ff0                graphics_context_set_text_color
  .text.window_set_background_color
-                0x00001fe8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001fe8                window_set_background_color
+                0x00001ffc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00001ffc                window_set_background_color
  .text.menu_layer_create
-                0x00001ff4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00001ff4                menu_layer_create
+                0x00002008        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002008                menu_layer_create
  .text.graphics_context_set_stroke_width
-                0x00002000        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002000                graphics_context_set_stroke_width
+                0x00002014        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002014                graphics_context_set_stroke_width
  .text.menu_cell_layer_is_highlighted
-                0x0000200c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x0000200c                menu_cell_layer_is_highlighted
+                0x00002020        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002020                menu_cell_layer_is_highlighted
  .text.text_layer_create
-                0x00002018        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002018                text_layer_create
+                0x0000202c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x0000202c                text_layer_create
  .text.text_layer_destroy
-                0x00002024        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002024                text_layer_destroy
+                0x00002038        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002038                text_layer_destroy
  .text.text_layer_get_content_size
-                0x00002030        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002030                text_layer_get_content_size
+                0x00002044        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002044                text_layer_get_content_size
  .text.text_layer_get_layer
-                0x0000203c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x0000203c                text_layer_get_layer
+                0x00002050        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002050                text_layer_get_layer
  .text.text_layer_set_background_color
-                0x00002048        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002048                text_layer_set_background_color
+                0x0000205c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x0000205c                text_layer_set_background_color
  .text.text_layer_set_font
-                0x00002054        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002054                text_layer_set_font
+                0x00002068        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002068                text_layer_set_font
  .text.text_layer_set_overflow_mode
-                0x00002060        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002060                text_layer_set_overflow_mode
+                0x00002074        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002074                text_layer_set_overflow_mode
  .text.text_layer_set_size
-                0x0000206c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x0000206c                text_layer_set_size
+                0x00002080        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002080                text_layer_set_size
  .text.text_layer_set_text
-                0x00002078        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002078                text_layer_set_text
+                0x0000208c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x0000208c                text_layer_set_text
  .text.text_layer_set_text_alignment
-                0x00002084        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002084                text_layer_set_text_alignment
+                0x00002098        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x00002098                text_layer_set_text_alignment
  .text.text_layer_set_text_color
-                0x00002090        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x00002090                text_layer_set_text_color
+                0x000020a4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x000020a4                text_layer_set_text_color
  .text.menu_layer_set_callbacks
-                0x0000209c        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x0000209c                menu_layer_set_callbacks
+                0x000020b0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x000020b0                menu_layer_set_callbacks
  .text.grect_inset
-                0x000020a8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x000020a8                grect_inset
+                0x000020bc        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x000020bc                grect_inset
  .text.graphics_draw_arc
-                0x000020b4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x000020b4                graphics_draw_arc
+                0x000020c8        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x000020c8                graphics_draw_arc
  .text.graphics_fill_radial
-                0x000020c0        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
-                0x000020c0                graphics_fill_radial
- .text.strchr   0x000020cc       0xd0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-strchr.o)
-                0x000020cc                strchr
- .text.strrchr  0x0000219c       0x2c /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-strrchr.o)
-                0x0000219c                strrchr
+                0x000020d4        0xc /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+                0x000020d4                graphics_fill_radial
+ .text.strchr   0x000020e0       0xd0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-strchr.o)
+                0x000020e0                strchr
+ .text.strrchr  0x000021b0       0x2c /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-strrchr.o)
+                0x000021b0                strrchr
  *(.rodata)
  *(.rodata*)
  .rodata.inbox_dropped_handler.str1.1
-                0x000021c8      0x2c3 src/c/orologio-hassio.c.49.o
+                0x000021dc      0x2c4 src/c/orologio-hassio.c.49.o
                                  0x24 (size before relaxing)
  .rodata.outbox_failed_handler.str1.1
-                0x0000248b       0x12 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x12 src/c/orologio-hassio.c.49.o
  .rodata.outbox_sent_handler.str1.1
-                0x0000248b       0x19 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x19 src/c/orologio-hassio.c.49.o
  .rodata.graph_update_proc.str1.1
-                0x0000248b       0x26 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x26 src/c/orologio-hassio.c.49.o
  .rodata.add_chat_message.str1.1
-                0x0000248b       0x1b src/c/orologio-hassio.c.49.o
+                0x000024a0       0x1b src/c/orologio-hassio.c.49.o
  .rodata.prv_window_load.str1.1
-                0x0000248b       0x1c src/c/orologio-hassio.c.49.o
+                0x000024a0       0x1c src/c/orologio-hassio.c.49.o
  .rodata.canned_menu_select_callback.str1.1
-                0x0000248b        0x9 src/c/orologio-hassio.c.49.o
+                0x000024a0        0x9 src/c/orologio-hassio.c.49.o
  .rodata.menu_draw_header_callback.str1.1
-                0x0000248b        0xc src/c/orologio-hassio.c.49.o
+                0x000024a0        0xc src/c/orologio-hassio.c.49.o
  .rodata.music_window_load.str1.1
-                0x0000248b       0x70 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x71 src/c/orologio-hassio.c.49.o
  .rodata.request_history_data.str1.1
-                0x0000248b       0x52 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x52 src/c/orologio-hassio.c.49.o
  .rodata.graph_window_load.str1.1
-                0x0000248b       0x24 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x24 src/c/orologio-hassio.c.49.o
  .rodata.graph_window_unload.str1.1
-                0x0000248b       0x1b src/c/orologio-hassio.c.49.o
+                0x000024a0       0x1b src/c/orologio-hassio.c.49.o
  .rodata.inbox_received_handler.str1.1
-                0x0000248b       0x53 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x53 src/c/orologio-hassio.c.49.o
  .rodata.accel_tap_handler.str1.1
-                0x0000248b       0x1f src/c/orologio-hassio.c.49.o
+                0x000024a0       0x1f src/c/orologio-hassio.c.49.o
  .rodata.music_send_command.str1.1
-                0x0000248b       0x22 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x22 src/c/orologio-hassio.c.49.o
  .rodata.music_down_long_click_handler.str1.1
-                0x0000248b        0xc src/c/orologio-hassio.c.49.o
+                0x000024a0        0xc src/c/orologio-hassio.c.49.o
  .rodata.music_up_long_click_handler.str1.1
-                0x0000248b        0xa src/c/orologio-hassio.c.49.o
+                0x000024a0        0xa src/c/orologio-hassio.c.49.o
  .rodata.music_down_click_handler.str1.1
-                0x0000248b        0xb src/c/orologio-hassio.c.49.o
+                0x000024a0        0xb src/c/orologio-hassio.c.49.o
  .rodata.music_select_click_handler.str1.1
-                0x0000248b       0x11 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x11 src/c/orologio-hassio.c.49.o
  .rodata.music_up_click_handler.str1.1
-                0x0000248b        0xb src/c/orologio-hassio.c.49.o
+                0x000024a0        0xb src/c/orologio-hassio.c.49.o
  .rodata.main.str1.1
-                0x0000248b       0x25 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x25 src/c/orologio-hassio.c.49.o
  .rodata.str1.1
-                0x0000248b       0x22 src/c/orologio-hassio.c.49.o
+                0x000024a0       0x22 src/c/orologio-hassio.c.49.o
 
-.glue_7         0x0000248c        0x0
- .glue_7        0x0000248c        0x0 linker stubs
+.glue_7         0x000024a0        0x0
+ .glue_7        0x000024a0        0x0 linker stubs
 
-.glue_7t        0x0000248c        0x0
- .glue_7t       0x0000248c        0x0 linker stubs
+.glue_7t        0x000024a0        0x0
+ .glue_7t       0x000024a0        0x0 linker stubs
 
-.vfp11_veneer   0x0000248c        0x0
- .vfp11_veneer  0x0000248c        0x0 linker stubs
+.vfp11_veneer   0x000024a0        0x0
+ .vfp11_veneer  0x000024a0        0x0 linker stubs
 
-.v4_bx          0x0000248c        0x0
- .v4_bx         0x0000248c        0x0 linker stubs
+.v4_bx          0x000024a0        0x0
+ .v4_bx         0x000024a0        0x0 linker stubs
 
-.init           0x0000248c        0x4
- .init          0x0000248c        0x4 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crti.o
-                0x0000248c                _init
+.init           0x000024a0        0x4
+ .init          0x000024a0        0x4 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crti.o
+                0x000024a0                _init
 
-.fini           0x00002490        0x4
- .fini          0x00002490        0x4 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crti.o
-                0x00002490                _fini
+.fini           0x000024a4        0x4
+ .fini          0x000024a4        0x4 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crti.o
+                0x000024a4                _fini
 
-.iplt           0x00002494        0x0
- .iplt          0x00002494        0x0 src/c/orologio-hassio.c.49.o
+.iplt           0x000024a8        0x0
+ .iplt          0x000024a8        0x0 src/c/orologio-hassio.c.49.o
 
-.rel.dyn        0x00002494        0x0
- .rel.iplt      0x00002494        0x0 src/c/orologio-hassio.c.49.o
+.rel.dyn        0x000024a8        0x0
+ .rel.iplt      0x000024a8        0x0 src/c/orologio-hassio.c.49.o
 
-.data           0x00002494       0xa4
+.data           0x000024a8       0xa4
  *(.data)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crti.o
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crtbegin.o
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
- .data          0x00002494        0x0 src/c/orologio-hassio.c.49.o
- .data          0x00002494        0x0 aplite/appinfo.auto.c.49.o
- .data          0x00002494        0x0 aplite/src/resource_ids.auto.c.49.o
- .data          0x00002494        0x0 src/message_keys.auto.c.49.o
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-atexit.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-exit.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-findfp.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-fwalk.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-stdio.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-strchr.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-strrchr.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-closer.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-reent.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-impure.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-lseekr.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-readr.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-writer.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-init.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-fini.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-lock.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-__atexit.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-__call_atexit.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-freer.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-mallocr.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-mlock.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-fclose.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-fflush.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-sbrkr.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-sysconf.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-errno.o)
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crtend.o
- .data          0x00002494        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crtn.o
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crti.o
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crtbegin.o
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
+ .data          0x000024a8        0x0 src/c/orologio-hassio.c.49.o
+ .data          0x000024a8        0x0 aplite/appinfo.auto.c.49.o
+ .data          0x000024a8        0x0 aplite/src/resource_ids.auto.c.49.o
+ .data          0x000024a8        0x0 src/message_keys.auto.c.49.o
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/aplite/lib/libpebble.a(tmp7jpKUopebble.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-atexit.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-exit.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-findfp.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-fwalk.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-stdio.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-strchr.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-strrchr.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-closer.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-reent.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-impure.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-lseekr.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-readr.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-writer.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-init.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-fini.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-lock.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-__atexit.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-__call_atexit.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-freer.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-mallocr.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-mlock.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-fclose.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-fflush.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-sbrkr.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-sysconf.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-errno.o)
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crtend.o
+ .data          0x000024a8        0x0 /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crtn.o
  *(.data.*)
  .data.s_can_shake
-                0x00002494        0x1 src/c/orologio-hassio.c.49.o
+                0x000024a8        0x1 src/c/orologio-hassio.c.49.o
  .data.s_music_title_str
-                0x00002495       0x40 src/c/orologio-hassio.c.49.o
+                0x000024a9       0x40 src/c/orologio-hassio.c.49.o
  .data.s_pebble_nickname
-                0x000024d5       0x20 src/c/orologio-hassio.c.49.o
- *fill*         0x000024f5        0x3 
+                0x000024e9       0x20 src/c/orologio-hassio.c.49.o
+ *fill*         0x00002509        0x3 
  .data.rel.ro.local.s_canned_messages
-                0x000024f8       0x18 src/c/orologio-hassio.c.49.o
+                0x0000250c       0x18 src/c/orologio-hassio.c.49.o
  .data.s_sensor_value_str
-                0x00002510       0x20 src/c/orologio-hassio.c.49.o
+                0x00002524       0x20 src/c/orologio-hassio.c.49.o
  .data.s_history_duration_hours
-                0x00002530        0x4 src/c/orologio-hassio.c.49.o
+                0x00002544        0x4 src/c/orologio-hassio.c.49.o
  .data.s_history_visual_max
-                0x00002534        0x4 src/c/orologio-hassio.c.49.o
+                0x00002548        0x4 src/c/orologio-hassio.c.49.o
 
-.igot.plt       0x00002538        0x0
- .igot.plt      0x00002538        0x0 src/c/orologio-hassio.c.49.o
+.igot.plt       0x0000254c        0x0
+ .igot.plt      0x0000254c        0x0 src/c/orologio-hassio.c.49.o
 
-.bss            0x00002538      0x8fc
+.bss            0x0000254c      0x8fc
  *(.bss)
  *(.bss.*)
  .bss.s_rounded_val_str.0
-                0x00002538       0x30 src/c/orologio-hassio.c.49.o
+                0x0000254c       0x30 src/c/orologio-hassio.c.49.o
  .bss.s_music_title_layer
-                0x00002568        0x4 src/c/orologio-hassio.c.49.o
+                0x0000257c        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_music_layer
-                0x0000256c        0x4 src/c/orologio-hassio.c.49.o
+                0x00002580        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_canned_menu_layer
-                0x00002570        0x4 src/c/orologio-hassio.c.49.o
+                0x00002584        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_canned_window
-                0x00002574        0x4 src/c/orologio-hassio.c.49.o
+                0x00002588        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_last_dictation
-                0x00002578      0x200 src/c/orologio-hassio.c.49.o
+                0x0000258c      0x200 src/c/orologio-hassio.c.49.o
  .bss.s_chat_content_height
-                0x00002778        0x4 src/c/orologio-hassio.c.49.o
+                0x0000278c        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_chat_layer_count
-                0x0000277c        0x4 src/c/orologio-hassio.c.49.o
+                0x00002790        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_chat_texts
-                0x00002780       0x14 src/c/orologio-hassio.c.49.o
- .bss.s_chat_layers
                 0x00002794       0x14 src/c/orologio-hassio.c.49.o
+ .bss.s_chat_layers
+                0x000027a8       0x14 src/c/orologio-hassio.c.49.o
  .bss.s_chat_bounds
-                0x000027a8        0x8 src/c/orologio-hassio.c.49.o
+                0x000027bc        0x8 src/c/orologio-hassio.c.49.o
  .bss.s_chat_scroll_layer
-                0x000027b0        0x4 src/c/orologio-hassio.c.49.o
+                0x000027c4        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_chat_window
-                0x000027b4        0x4 src/c/orologio-hassio.c.49.o
+                0x000027c8        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_display_order
-                0x000027b8       0x28 src/c/orologio-hassio.c.49.o
+                0x000027cc       0x28 src/c/orologio-hassio.c.49.o
  .bss.s_num_lights
-                0x000027e0        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_lights  0x000027e4      0x460 src/c/orologio-hassio.c.49.o
+                0x000027f4        0x4 src/c/orologio-hassio.c.49.o
+ .bss.s_lights  0x000027f8      0x460 src/c/orologio-hassio.c.49.o
  .bss.s_auto_close_timer
-                0x00002c44        0x4 src/c/orologio-hassio.c.49.o
+                0x00002c58        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_feedback_timer
-                0x00002c48        0x4 src/c/orologio-hassio.c.49.o
+                0x00002c5c        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_sensor_name_str
-                0x00002c4c       0x40 src/c/orologio-hassio.c.49.o
+                0x00002c60       0x40 src/c/orologio-hassio.c.49.o
  .bss.s_sensor_percent
-                0x00002c8c        0x4 src/c/orologio-hassio.c.49.o
+                0x00002ca0        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_chart_layer
-                0x00002c90        0x4 src/c/orologio-hassio.c.49.o
+                0x00002ca4        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_unit_str
-                0x00002c94       0x10 src/c/orologio-hassio.c.49.o
+                0x00002ca8       0x10 src/c/orologio-hassio.c.49.o
  .bss.s_graph_min_str
-                0x00002ca4       0x40 src/c/orologio-hassio.c.49.o
+                0x00002cb8       0x40 src/c/orologio-hassio.c.49.o
  .bss.s_graph_max_str
-                0x00002ce4       0x80 src/c/orologio-hassio.c.49.o
+                0x00002cf8       0x80 src/c/orologio-hassio.c.49.o
  .bss.s_sensor_name_layer
-                0x00002d64        0x4 src/c/orologio-hassio.c.49.o
+                0x00002d78        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_countdown_layer
-                0x00002d68        0x4 src/c/orologio-hassio.c.49.o
+                0x00002d7c        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_history_count
-                0x00002d6c        0x4 src/c/orologio-hassio.c.49.o
+                0x00002d80        0x4 src/c/orologio-hassio.c.49.o
  .bss.s_history_data
-                0x00002d70       0xa0 src/c/orologio-hassio.c.49.o
+                0x00002d84       0xa0 src/c/orologio-hassio.c.49.o
  .bss.s_history_visual_min
-                0x00002e10        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_graph_min_layer
-                0x00002e14        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_graph_title_layer
-                0x00002e18        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_graph_layer
-                0x00002e1c        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_graph_window
-                0x00002e20        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_music_window
                 0x00002e24        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_menu_layer
+ .bss.s_graph_min_layer
                 0x00002e28        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_menu_window
+ .bss.s_graph_title_layer
                 0x00002e2c        0x4 src/c/orologio-hassio.c.49.o
- .bss.s_window  0x00002e30        0x4 src/c/orologio-hassio.c.49.o
+ .bss.s_graph_layer
+                0x00002e30        0x4 src/c/orologio-hassio.c.49.o
+ .bss.s_graph_window
+                0x00002e34        0x4 src/c/orologio-hassio.c.49.o
+ .bss.s_music_window
+                0x00002e38        0x4 src/c/orologio-hassio.c.49.o
+ .bss.s_menu_layer
+                0x00002e3c        0x4 src/c/orologio-hassio.c.49.o
+ .bss.s_menu_window
+                0x00002e40        0x4 src/c/orologio-hassio.c.49.o
+ .bss.s_window  0x00002e44        0x4 src/c/orologio-hassio.c.49.o
 
 DISCARD
  libc.a(*)
@@ -2062,11 +2062,11 @@ LOAD /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc
  .comment       0x00000039       0x3a /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(libc_a-errno.o)
  .comment       0x00000039       0x3a /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp/crtend.o
 
-.debug_info     0x00000000     0x4bbe
- .debug_info    0x00000000     0x4746 src/c/orologio-hassio.c.49.o
- .debug_info    0x00004746      0x2fc aplite/appinfo.auto.c.49.o
- .debug_info    0x00004a42       0xed aplite/src/resource_ids.auto.c.49.o
- .debug_info    0x00004b2f       0x8f src/message_keys.auto.c.49.o
+.debug_info     0x00000000     0x4be8
+ .debug_info    0x00000000     0x4770 src/c/orologio-hassio.c.49.o
+ .debug_info    0x00004770      0x2fc aplite/appinfo.auto.c.49.o
+ .debug_info    0x00004a6c       0xed aplite/src/resource_ids.auto.c.49.o
+ .debug_info    0x00004b59       0x8f src/message_keys.auto.c.49.o
 
 .debug_abbrev   0x00000000      0x732
  .debug_abbrev  0x00000000      0x5f0 src/c/orologio-hassio.c.49.o
@@ -2075,9 +2075,9 @@ LOAD /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc
  .debug_abbrev  0x000006ea       0x48 src/message_keys.auto.c.49.o
 
 .debug_loclists
-                0x00000000     0x17d3
+                0x00000000     0x17d6
  .debug_loclists
-                0x00000000     0x17d3 src/c/orologio-hassio.c.49.o
+                0x00000000     0x17d6 src/c/orologio-hassio.c.49.o
 
 .debug_aranges  0x00000000      0x238
  .debug_aranges
@@ -2094,18 +2094,18 @@ LOAD /home/igino/.pebble-sdk/SDKs/4.9.127/toolchain/arm-none-eabi/bin/../lib/gcc
  .debug_rnglists
                 0x00000000      0x256 src/c/orologio-hassio.c.49.o
 
-.debug_line     0x00000000     0x2020
- .debug_line    0x00000000     0x1ca0 src/c/orologio-hassio.c.49.o
- .debug_line    0x00001ca0      0x163 aplite/appinfo.auto.c.49.o
- .debug_line    0x00001e03      0x112 aplite/src/resource_ids.auto.c.49.o
- .debug_line    0x00001f15      0x10b src/message_keys.auto.c.49.o
+.debug_line     0x00000000     0x202f
+ .debug_line    0x00000000     0x1caf src/c/orologio-hassio.c.49.o
+ .debug_line    0x00001caf      0x163 aplite/appinfo.auto.c.49.o
+ .debug_line    0x00001e12      0x112 aplite/src/resource_ids.auto.c.49.o
+ .debug_line    0x00001f24      0x10b src/message_keys.auto.c.49.o
 
-.debug_str      0x00000000     0x1ff4
- .debug_str     0x00000000     0x1ff4 src/c/orologio-hassio.c.49.o
-                               0x1ebd (size before relaxing)
- .debug_str     0x00001ff4      0x3b1 aplite/appinfo.auto.c.49.o
- .debug_str     0x00001ff4      0x214 aplite/src/resource_ids.auto.c.49.o
- .debug_str     0x00001ff4      0x17f src/message_keys.auto.c.49.o
+.debug_str      0x00000000     0x1ffe
+ .debug_str     0x00000000     0x1ffe src/c/orologio-hassio.c.49.o
+                               0x1ece (size before relaxing)
+ .debug_str     0x00001ffe      0x3b1 aplite/appinfo.auto.c.49.o
+ .debug_str     0x00001ffe      0x214 aplite/src/resource_ids.auto.c.49.o
+ .debug_str     0x00001ffe      0x17f src/message_keys.auto.c.49.o
 
 .debug_frame    0x00000000      0x778
  .debug_frame   0x00000000      0x778 src/c/orologio-hassio.c.49.o
