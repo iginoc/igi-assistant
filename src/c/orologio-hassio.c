@@ -15,16 +15,23 @@
 #define KEY_LAUNCH_APP 12
 #define KEY_MUSIC_TITLE 13
 #define KEY_CONFIG_OPEN 14
+#define KEY_GET_HISTORY 15
+#define KEY_HISTORY_DATA 16
  
 static Window *s_window;
 static Window *s_menu_window;
 static MenuLayer *s_menu_layer;
 static Window *s_music_window;
+static Window *s_graph_window;
+static Layer *s_graph_layer;
+static TextLayer *s_graph_title_layer;
+
+static int s_history_data[40];
+static int s_history_count = 0;
 
 static TextLayer *s_countdown_layer;
 static TextLayer *s_sensor_name_layer;
 static Layer *s_chart_layer;
-static Animation *s_gauge_animation;
 static int s_target_percent = 0;
 static int s_start_percent = 0;
 static int s_sensor_percent = 0;
@@ -289,14 +296,22 @@ static void canned_window_load(Window *window) {
 
 static void canned_window_unload(Window *window) {
   menu_layer_destroy(s_canned_menu_layer);
+  s_canned_menu_layer = NULL;
 }
 
 static void chat_select_click_handler(ClickRecognizerRef recognizer, void *context) {
+  if (!s_canned_window) {
+    s_canned_window = window_create();
+    window_set_window_handlers(s_canned_window, (WindowHandlers) {
+      .load = canned_window_load,
+      .unload = canned_window_unload,
+    });
+  }
   window_stack_push(s_canned_window, true);
 }
 
 static void chat_click_config_provider(void *context) {
-  // Gestione manuale dello scroll per permettere l'uso del tasto Select
+  // Gestione manuale dello scroll per permettere l'uso del tasto Select per aprire i messaggi predefiniti
   window_single_repeating_click_subscribe(BUTTON_ID_UP, 100, chat_up_click_handler);
   window_single_repeating_click_subscribe(BUTTON_ID_DOWN, 100, chat_down_click_handler);
   window_single_click_subscribe(BUTTON_ID_SELECT, chat_select_click_handler);
@@ -448,17 +463,6 @@ static void music_window_unload(Window *window) {
 }
 // -----------------------------
 
-static void gauge_anim_update(Animation *anim, const AnimationProgress progress) {
-  s_sensor_percent = s_start_percent + ((s_target_percent - s_start_percent) * (int)progress) / ANIMATION_NORMALIZED_MAX;
-  if (s_chart_layer) {
-    layer_mark_dirty(s_chart_layer);
-  }
-}
-
-static const AnimationImplementation s_gauge_anim_impl = {
-  .update = gauge_anim_update
-};
-
 static void chart_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
   // Ridimensiona lo spessore del gauge in base alla dimensione dello schermo
@@ -555,6 +559,85 @@ static void chart_update_proc(Layer *layer, GContext *ctx) {
   graphics_fill_circle(ctx, center, 5);
 }
 
+static void graph_update_proc(Layer *layer, GContext *ctx) {
+  GRect bounds = layer_get_bounds(layer);
+  if (!layer) return;
+  if (s_history_count < 2) {
+    graphics_context_set_text_color(ctx, GColorBlack);
+    graphics_draw_text(ctx, "Caricamento dati...", fonts_get_system_font(FONT_KEY_GOTHIC_18), 
+                       GRect(0, bounds.size.h/2 - 10, bounds.size.w, 30), 
+                       GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
+    return;
+  }
+
+  // Limite massimo di punti per l'array allocato (20)
+  if (s_history_count > 20) s_history_count = 20;
+
+  int min = s_history_data[0];
+  int max = s_history_data[0];
+  for (int i = 1; i < s_history_count; i++) {
+    if (s_history_data[i] < min) min = s_history_data[i];
+    if (s_history_data[i] > max) max = s_history_data[i];
+  }
+  if (max == min) { max++; min--; }
+
+  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_context_set_stroke_width(ctx, 2);
+
+  int padding = 20;
+  int graph_h = bounds.size.h - (padding * 2);
+
+  for (int i = 0; i < s_history_count - 1; i++) {
+    int x1 = (i * bounds.size.w) / (s_history_count - 1);
+    int y1 = bounds.size.h - padding - ((s_history_data[i] - min) * graph_h) / (max - min);
+    int x2 = ((i + 1) * bounds.size.w) / (s_history_count - 1);
+    int y2 = bounds.size.h - padding - ((s_history_data[i+1] - min) * graph_h) / (max - min);
+    graphics_draw_line(ctx, GPoint(x1, y1), GPoint(x2, y2));
+  }
+}
+
+static void graph_window_load(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Graph: Loading window...");
+  Layer *window_layer = window_get_root_layer(window);
+  GRect bounds = layer_get_bounds(window_layer);
+  s_graph_layer = layer_create(bounds);
+  if (s_graph_layer) {
+    layer_set_update_proc(s_graph_layer, graph_update_proc);
+    layer_add_child(window_layer, s_graph_layer);
+  }
+
+  s_graph_title_layer = text_layer_create(GRect(0, 5, bounds.size.w, 25));
+  if (s_graph_title_layer) {
+    text_layer_set_text(s_graph_title_layer, "Ultime 6 ore");
+    text_layer_set_text_alignment(s_graph_title_layer, GTextAlignmentCenter);
+    text_layer_set_font(s_graph_title_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+    layer_add_child(window_layer, text_layer_get_layer(s_graph_title_layer));
+  }
+
+  // Richiedi i dati solo dopo che la finestra è stata caricata correttamente
+  DictionaryIterator *iter;
+  if (app_message_outbox_begin(&iter) == APP_MSG_OK) {
+    dict_write_uint8(iter, KEY_GET_HISTORY, 1);
+    app_message_outbox_send();
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Graph: History request sent");
+  } else {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Graph: Failed to start outbox");
+  }
+}
+
+static void graph_window_unload(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Graph: Unloading window...");
+  if (s_graph_title_layer) {
+    text_layer_destroy(s_graph_title_layer);
+    s_graph_title_layer = NULL;
+  }
+  if (s_graph_layer) {
+    layer_destroy(s_graph_layer);
+    s_graph_layer = NULL;
+  }
+  reset_auto_close_timer();
+}
+
 static void update_sensor_display() {
   // Implementazione manuale di parsing e arrotondamento per evitare atof()
   // che causa errori di linker su Pebble SDK
@@ -591,7 +674,7 @@ static void update_sensor_display() {
   unit = p;
 
   // Ricostruiamo la stringa senza decimali per il display
-  static char s_rounded_val_str[32];
+  static char s_rounded_val_str[48];
   if (unit && *unit != '\0') {
     snprintf(s_rounded_val_str, sizeof(s_rounded_val_str), "%d %s", rounded_val, unit);
   } else {
@@ -611,20 +694,10 @@ static void update_sensor_display() {
   if (new_percent < 0) new_percent = 0;
   if (new_percent > 100) new_percent = 100;
 
-  // Avvia l'animazione fluida se il valore è cambiato
-  if (new_percent != s_target_percent) {
-    if (s_gauge_animation) {
-      animation_unschedule(s_gauge_animation);
-    }
-    s_start_percent = s_sensor_percent; // Parte dalla posizione attuale della lancetta
-    s_target_percent = new_percent;
-
-    s_gauge_animation = animation_create();
-    animation_set_duration(s_gauge_animation, 800); // 800ms per un movimento naturale
-    animation_set_curve(s_gauge_animation, AnimationCurveEaseInOut);
-    animation_set_implementation(s_gauge_animation, &s_gauge_anim_impl);
-    animation_schedule(s_gauge_animation);
-  }
+  // Aggiornamento diretto senza animazione per risparmiare RAM
+  s_sensor_percent = new_percent;
+  s_target_percent = new_percent;
+  if (s_chart_layer) layer_mark_dirty(s_chart_layer);
 }
 
 static void trigger_light_toggle(int row) {
@@ -633,9 +706,10 @@ static void trigger_light_toggle(int row) {
   int real_index = s_display_order[row];
   // Invia comando toggle a JS
   DictionaryIterator *iter;
-  app_message_outbox_begin(&iter);
-  dict_write_cstring(iter, KEY_TOGGLE_LIGHT, s_lights[real_index].entity);
-  app_message_outbox_send();
+  if (app_message_outbox_begin(&iter) == APP_MSG_OK) {
+    dict_write_cstring(iter, KEY_TOGGLE_LIGHT, s_lights[real_index].entity);
+    app_message_outbox_send();
+  }
 
   // Feedback tattile
   vibes_short_pulse();
@@ -663,6 +737,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
   Tuple *nick_tuple = dict_find(iter, KEY_NICKNAME);
   Tuple *music_title_tuple = dict_find(iter, KEY_MUSIC_TITLE);
   Tuple *config_open_tuple = dict_find(iter, KEY_CONFIG_OPEN);
+  Tuple *history_tuple = dict_find(iter, KEY_HISTORY_DATA);
   
   if (nick_tuple) {
     snprintf(s_pebble_nickname, sizeof(s_pebble_nickname), "%s", nick_tuple->value->cstring);
@@ -714,6 +789,18 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
     } else {
       reset_auto_close_timer();
     }
+  }
+
+  if (history_tuple) {
+    char *str = history_tuple->value->cstring;
+    s_history_count = 0;
+    char *p = str;
+    while (p && *p != '\0' && s_history_count < 40) {
+      s_history_data[s_history_count++] = atoi(p);
+      p = strchr(p, ',');
+      if (p) p++;
+    }
+    if (s_graph_layer) layer_mark_dirty(s_graph_layer);
   }
 }
 
@@ -810,18 +897,37 @@ static void auto_close_callback(void *data) {
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   reset_auto_close_timer();
+  if (!s_music_window) {
+    s_music_window = window_create();
+    window_set_window_handlers(s_music_window, (WindowHandlers) {
+      .load = music_window_load,
+      .unload = music_window_unload,
+    });
+  }
   window_stack_push(s_music_window, true);
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   reset_auto_close_timer();
-  // Apri il menu delle luci (la finestra è già creata in init)
-  const bool animated = true;
-  window_stack_push(s_menu_window, animated);
+  if (!s_menu_window) {
+    s_menu_window = window_create();
+    window_set_window_handlers(s_menu_window, (WindowHandlers) {
+      .load = prv_menu_window_load,
+      .unload = prv_menu_window_unload,
+    });
+  }
+  window_stack_push(s_menu_window, true);
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
   reset_auto_close_timer();
+  if (!s_chat_window) {
+    s_chat_window = window_create();
+    window_set_window_handlers(s_chat_window, (WindowHandlers) {
+      .load = chat_window_load,
+      .unload = chat_window_unload,
+    });
+  }
   window_stack_push(s_chat_window, true);
 }
 
@@ -865,12 +971,11 @@ static void prv_window_load(Window *window) {
 
 static void prv_window_unload(Window *window) {
   text_layer_destroy(s_countdown_layer);
+  s_countdown_layer = NULL;
   text_layer_destroy(s_sensor_name_layer);
+  s_sensor_name_layer = NULL;
   layer_destroy(s_chart_layer);
-  if (s_gauge_animation) {
-    animation_unschedule(s_gauge_animation);
-    s_gauge_animation = NULL;
-  }
+  s_chart_layer = NULL;
   if (s_feedback_timer) {
     app_timer_cancel(s_feedback_timer);
     s_feedback_timer = NULL;
@@ -890,13 +995,41 @@ static void shake_cooldown_callback(void *data) {
 static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
   if (!s_can_shake) return;
 
-  if (s_menu_window && window_stack_get_top_window() == s_menu_window && s_menu_layer) {
+  Window *top_window = window_stack_get_top_window();
+  
+  // Se il grafico è già aperto o in apertura, ignora lo shake
+  if (top_window == s_graph_window) return;
+
+  if (s_menu_window && top_window == s_menu_window && s_menu_layer) {
     reset_auto_close_timer();
     s_can_shake = false;
     app_timer_register(1000, shake_cooldown_callback, NULL);
 
     MenuIndex selected = menu_layer_get_selected_index(s_menu_layer);
     trigger_light_toggle(selected.row);
+  } else if (top_window == s_window) {
+    s_can_shake = false;
+    app_timer_register(1000, shake_cooldown_callback, NULL);
+    s_history_count = 0; // Reset dati precedenti
+
+    // Blocca IMMEDIATAMENTE il timeout di chiusura automatica globale
+    if (s_auto_close_timer) {
+      app_timer_cancel(s_auto_close_timer);
+      s_auto_close_timer = NULL;
+    }
+
+    if (!s_graph_window) {
+      s_graph_window = window_create();
+      window_set_window_handlers(s_graph_window, (WindowHandlers) {
+        .load = graph_window_load,
+        .unload = graph_window_unload,
+      });
+      if (!s_graph_window) { // Verifica se la creazione della finestra è fallita
+        APP_LOG(APP_LOG_LEVEL_ERROR, "Failed to create graph window!");
+        return; // Interrompi se la creazione della finestra non è riuscita
+      }
+    }
+    window_stack_push(s_graph_window, true);
   }
 }
 
@@ -921,40 +1054,12 @@ static void prv_init(void) {
   const bool animated = true;
   window_stack_push(s_window, animated);
 
-  // Inizializza la finestra del menu (ma non mostrarla ancora)
-  s_menu_window = window_create();
-  window_set_window_handlers(s_menu_window, (WindowHandlers) {
-    .load = prv_menu_window_load,
-    .unload = prv_menu_window_unload,
-  });
-
-  // Inizializza la finestra della chat
-  s_chat_window = window_create();
-  window_set_window_handlers(s_chat_window, (WindowHandlers) {
-    .load = chat_window_load,
-    .unload = chat_window_unload,
-  });
-
-  // Inizializza la finestra messaggi predefiniti
-  s_canned_window = window_create();
-  window_set_window_handlers(s_canned_window, (WindowHandlers) {
-    .load = canned_window_load,
-    .unload = canned_window_unload,
-  });
-
-  // Inizializza la finestra musica
-  s_music_window = window_create();
-  window_set_window_handlers(s_music_window, (WindowHandlers) {
-    .load = music_window_load,
-    .unload = music_window_unload,
-  });
-
   // Registra AppMessage per ricevere la configurazione
   app_message_register_inbox_received(inbox_received_handler);
   app_message_register_outbox_sent(outbox_sent_handler);
   app_message_register_outbox_failed(outbox_failed_handler);
   app_message_register_inbox_dropped(inbox_dropped_handler);
-  app_message_open(1024, 1024); // Aumentato buffer per gestire i dati delle luci e musica
+  app_message_open(512, 512); // Aumentato per gestire correttamente i dati storici
 
   // Iscrizione al tap per il toggle
   accel_tap_service_subscribe(accel_tap_handler);
@@ -965,10 +1070,11 @@ static void prv_init(void) {
 
 static void prv_deinit(void) {
   window_destroy(s_window);
-  window_destroy(s_menu_window);
-  window_destroy(s_chat_window);
-  window_destroy(s_canned_window);
-  window_destroy(s_music_window);
+  if (s_menu_window) window_destroy(s_menu_window);
+  if (s_chat_window) window_destroy(s_chat_window);
+  if (s_canned_window) window_destroy(s_canned_window);
+  if (s_music_window) window_destroy(s_music_window);
+  if (s_graph_window) window_destroy(s_graph_window);
   accel_tap_service_unsubscribe();
 }
 

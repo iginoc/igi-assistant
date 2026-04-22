@@ -4,6 +4,7 @@
 
 ### Key Features
 *   **Sensor Monitoring:** Display a specific sensor (e.g., car battery, power usage) directly on the main screen with a visual gauge and large, readable fonts.
+*   **Historical Graphs:** View a line chart of the selected sensor's data for the last 6 hours by simply shaking your wrist.
 *   **Light Control:** Quick menu to toggle selected lights on and off.
 *   **Home Assistant Chat:** Send and receive text messages to Home Assistant (requires `input_text`). Supports voice dictation (on microphone-enabled models) and customizable canned messages.
 *   **Music Control:** Control active media players (Play/Pause, Volume, Next/Prev Track).
@@ -42,6 +43,7 @@ To use all features, add the following to your `configuration.yaml` or create th
 *   **UP:** Open Music Control.
 *   **SELECT:** Open Lights Menu.
 *   **DOWN:** Open Chat.
+*   **SHAKE (Wrist):** Open the historical graph for the current sensor.
 
 **Lights Menu:**
 *   **UP/DOWN:** Scroll through lights.

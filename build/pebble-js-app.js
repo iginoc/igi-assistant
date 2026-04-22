@@ -112,6 +112,8 @@
 	var KEY_LAUNCH_APP = 12;
 	var KEY_MUSIC_TITLE = 13;
 	var KEY_CONFIG_OPEN = 14;
+	var KEY_GET_HISTORY = 15;
+	var KEY_HISTORY_DATA = 16;
 	
 	// Configurazione Home Assistant (Assicurati che corrispondano a quelli nel file HTML)
 	var haUrl = localStorage.getItem('pebble_ha_url') || ""; 
@@ -239,6 +241,38 @@
 	  .catch(function(err) {
 	    console.log("Error fetching sensor: " + err.message);
 	  });
+	}
+	
+	function updateHistory() {
+	  var sensorEntity = localStorage.getItem('pebble_sensor_config') || "sensor.auto_batteria_stimata";
+	  var now = new Date();
+	  var start = new Date(now.getTime() - (6 * 60 * 60 * 1000)); // 6 ore fa
+	  var startTimeStr = start.toISOString();
+	
+	  console.log("Fetching history for: " + sensorEntity);
+	  fetch(haUrl + "/api/history/period/" + startTimeStr + "?filter_entity_id=" + sensorEntity, {
+	    headers: { "Authorization": "Bearer " + haToken, "Content-Type": "application/json" }
+	  })
+	  .then(function(response) {
+	    if (!response.ok) throw new Error('History fetch failed');
+	    return response.json();
+	  })
+	  .then(function(data) {
+	    if (data && data[0] && data[0].length > 0) {
+	      var history = data[0];
+	      var values = [];
+	      var step = Math.max(1, Math.floor(history.length / 20)); 
+	      for (var i = 0; i < history.length; i += step) {
+	        var val = parseFloat(history[i].state);
+	        if (!isNaN(val)) values.push(Math.round(val));
+	        if (values.length >= 20) break;
+	      }
+	      var dict = {};
+	      dict[KEY_HISTORY_DATA] = values.join(",");
+	      Pebble.sendAppMessage(dict);
+	    }
+	  })
+	  .catch(function(err) { console.log("Error fetching history: " + err); });
 	}
 	
 	function toggleLight(entityId) {
@@ -422,6 +456,10 @@
 	    } else {
 	      controlMusic(cmd);
 	    }
+	  }
+	
+	  if (dict[KEY_GET_HISTORY]) {
+	    updateHistory();
 	  }
 	});
 	
