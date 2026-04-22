@@ -16,7 +16,9 @@
 #define KEY_MUSIC_TITLE 13
 #define KEY_CONFIG_OPEN 14
 #define KEY_GET_HISTORY 15
-#define KEY_HISTORY_DATA 16
+#define KEY_HISTORY_DATA 16 // Dati campionati per il grafico
+#define KEY_GLOBAL_MAX 17   // Valore massimo assoluto del periodo
+#define KEY_GLOBAL_MIN 18   // Valore minimo assoluto del periodo
  
 static Window *s_window;
 static Window *s_menu_window;
@@ -24,13 +26,20 @@ static MenuLayer *s_menu_layer;
 static Window *s_music_window;
 static Window *s_graph_window;
 static Layer *s_graph_layer;
-static TextLayer *s_graph_title_layer;
+static TextLayer *s_graph_title_layer; // Combined MAX/MIN value
+static TextLayer *s_graph_min_layer;   // Layer per il valore minimo
 
+static int s_history_visual_min = 0;   // Valore minimo per la scala del grafico
+static int s_history_visual_max = 100; // Valore massimo per la scala del grafico
+static int s_history_duration_hours = 6; // Default 6 ore
 static int s_history_data[40];
 static int s_history_count = 0;
 
 static TextLayer *s_countdown_layer;
 static TextLayer *s_sensor_name_layer;
+static char s_graph_max_str[128]; // Aumentato per 3 righe di testo
+static char s_graph_min_str[64];  // Buffer per il valore minimo
+static char s_unit_str[16] = "";  // Buffer per l'unità di misura
 static Layer *s_chart_layer;
 static int s_target_percent = 0;
 static int s_start_percent = 0;
@@ -564,65 +573,104 @@ static void graph_update_proc(Layer *layer, GContext *ctx) {
   if (!layer) return;
   if (s_history_count < 2) {
     graphics_context_set_text_color(ctx, GColorBlack);
-    graphics_draw_text(ctx, "Caricamento dati...", fonts_get_system_font(FONT_KEY_GOTHIC_18), 
+    graphics_draw_text(ctx, "Loading data...", fonts_get_system_font(FONT_KEY_GOTHIC_18), 
                        GRect(0, bounds.size.h/2 - 10, bounds.size.w, 30), 
                        GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
     return;
   }
 
-  // Limite massimo di punti per l'array allocato (20)
-  if (s_history_count > 20) s_history_count = 20;
-
-  int min = s_history_data[0];
-  int max = s_history_data[0];
-  for (int i = 1; i < s_history_count; i++) {
-    if (s_history_data[i] < min) min = s_history_data[i];
-    if (s_history_data[i] > max) max = s_history_data[i];
-  }
-  if (max == min) { max++; min--; }
+  // Limite massimo di punti per l'array allocato (40)
+  int actual_history_count = s_history_count;
+  if (actual_history_count > 40) actual_history_count = 40;
+  
+  int min_val = s_history_visual_min;
+  int max_val = s_history_visual_max;
+  if (max_val == min_val) { max_val += 10; } 
 
   graphics_context_set_stroke_color(ctx, GColorBlack);
   graphics_context_set_stroke_width(ctx, 2);
 
-  int padding = 20;
-  int graph_h = bounds.size.h - (padding * 2);
+  int graph_padding_y = 5; // Piccolo padding interno al layer del grafico
+  int graph_h = bounds.size.h - (graph_padding_y * 2);
 
-  for (int i = 0; i < s_history_count - 1; i++) {
-    int x1 = (i * bounds.size.w) / (s_history_count - 1);
-    int y1 = bounds.size.h - padding - ((s_history_data[i] - min) * graph_h) / (max - min);
-    int x2 = ((i + 1) * bounds.size.w) / (s_history_count - 1);
-    int y2 = bounds.size.h - padding - ((s_history_data[i+1] - min) * graph_h) / (max - min);
+  for (int i = 0; i < actual_history_count - 1; i++) {
+    int x1 = (i * bounds.size.w) / (actual_history_count - 1);
+    int y1 = bounds.size.h - graph_padding_y - ((s_history_data[i] - min_val) * graph_h) / (max_val - min_val);
+    int x2 = ((i + 1) * bounds.size.w) / (actual_history_count - 1);
+    int y2 = bounds.size.h - graph_padding_y - ((s_history_data[i+1] - min_val) * graph_h) / (max_val - min_val);
     graphics_draw_line(ctx, GPoint(x1, y1), GPoint(x2, y2));
   }
+
+  // Disegna linee verticali per indicare le ore (5 linee per dividere le 6 ore)
+  int num_lines = s_history_duration_hours;
+  graphics_context_set_stroke_width(ctx, 1);
+  graphics_context_set_stroke_color(ctx, PBL_IF_COLOR_ELSE(GColorRed, GColorLightGray));
+  for (int i = 1; i < num_lines; i++) {
+    int x = (i * bounds.size.w) / num_lines;
+    graphics_draw_line(ctx, GPoint(x, 0), GPoint(x, bounds.size.h));
+  }
+}
+
+static void request_history_data() {
+  DictionaryIterator *iter;
+  if (app_message_outbox_begin(&iter) == APP_MSG_OK) {
+    dict_write_int32(iter, KEY_GET_HISTORY, s_history_duration_hours); 
+    app_message_outbox_send();
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Graph: Requesting last %d hours", s_history_duration_hours);
+  } else {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Graph: Failed to start outbox for history request");
+  }
+}
+
+static void graph_up_click_handler(ClickRecognizerRef recognizer, void *context) {
+  s_history_duration_hours += 6; // Aumenta durata
+  request_history_data();
+}
+
+static void graph_down_click_handler(ClickRecognizerRef recognizer, void *context) {
+  if (s_history_duration_hours > 6) { 
+    s_history_duration_hours -= 6;
+    request_history_data();
+  }
+}
+
+static void graph_click_config_provider(void *context) {
+  window_single_click_subscribe(BUTTON_ID_UP, graph_up_click_handler);
+  window_single_click_subscribe(BUTTON_ID_DOWN, graph_down_click_handler);
 }
 
 static void graph_window_load(Window *window) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Graph: Loading window...");
   Layer *window_layer = window_get_root_layer(window);
-  GRect bounds = layer_get_bounds(window_layer);
-  s_graph_layer = layer_create(bounds);
+  GRect window_bounds = layer_get_bounds(window_layer);
+
+  // Layer Titolo e Max (in alto, 2 righe)
+  s_graph_title_layer = text_layer_create(GRect(0, 0, window_bounds.size.w, 55));
+  if (s_graph_title_layer) {
+    text_layer_set_text(s_graph_title_layer, "Loading...");
+    text_layer_set_text_alignment(s_graph_title_layer, GTextAlignmentCenter);
+    text_layer_set_font(s_graph_title_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+    layer_add_child(window_layer, text_layer_get_layer(s_graph_title_layer));
+  }
+
+  // Layer Min (in basso, 1 riga)
+  s_graph_min_layer = text_layer_create(GRect(0, window_bounds.size.h - 30, window_bounds.size.w, 30));
+  if (s_graph_min_layer) {
+    text_layer_set_text(s_graph_min_layer, "Loading..."); // Consistent initial text
+    text_layer_set_text_alignment(s_graph_min_layer, GTextAlignmentCenter);
+    text_layer_set_font(s_graph_min_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+    layer_add_child(window_layer, text_layer_get_layer(s_graph_min_layer));
+  }
+
+  // Layer del grafico (compreso tra i due layer di testo, altezza adattata)
+  s_graph_layer = layer_create(GRect(0, 55, window_bounds.size.w, window_bounds.size.h - 55 - 30)); 
   if (s_graph_layer) {
     layer_set_update_proc(s_graph_layer, graph_update_proc);
     layer_add_child(window_layer, s_graph_layer);
   }
 
-  s_graph_title_layer = text_layer_create(GRect(0, 5, bounds.size.w, 25));
-  if (s_graph_title_layer) {
-    text_layer_set_text(s_graph_title_layer, "Ultime 6 ore");
-    text_layer_set_text_alignment(s_graph_title_layer, GTextAlignmentCenter);
-    text_layer_set_font(s_graph_title_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
-    layer_add_child(window_layer, text_layer_get_layer(s_graph_title_layer));
-  }
-
-  // Richiedi i dati solo dopo che la finestra è stata caricata correttamente
-  DictionaryIterator *iter;
-  if (app_message_outbox_begin(&iter) == APP_MSG_OK) {
-    dict_write_uint8(iter, KEY_GET_HISTORY, 1);
-    app_message_outbox_send();
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "Graph: History request sent");
-  } else {
-    APP_LOG(APP_LOG_LEVEL_ERROR, "Graph: Failed to start outbox");
-  }
+  window_set_click_config_provider(window, graph_click_config_provider);
+  request_history_data(); // Richiedi i dati con l'offset iniziale
 }
 
 static void graph_window_unload(Window *window) {
@@ -631,10 +679,15 @@ static void graph_window_unload(Window *window) {
     text_layer_destroy(s_graph_title_layer);
     s_graph_title_layer = NULL;
   }
+  if (s_graph_min_layer) {
+    text_layer_destroy(s_graph_min_layer);
+    s_graph_min_layer = NULL;
+  }
   if (s_graph_layer) {
     layer_destroy(s_graph_layer);
     s_graph_layer = NULL;
   }
+  s_history_duration_hours = 6; // Reset durata all'uscita
   reset_auto_close_timer();
 }
 
@@ -733,14 +786,21 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
   Tuple *sensor_tuple = dict_find(iter, KEY_SENSOR_VALUE);
   Tuple *name_tuple = dict_find(iter, KEY_SENSOR_NAME);
   Tuple *idx_tuple = dict_find(iter, KEY_LIGHT_INDEX);
+  Tuple *unit_tuple = dict_find(iter, KEY_SENSOR_UNIT);
   Tuple *chat_tuple = dict_find(iter, KEY_CHAT_TEXT);
   Tuple *nick_tuple = dict_find(iter, KEY_NICKNAME);
   Tuple *music_title_tuple = dict_find(iter, KEY_MUSIC_TITLE);
   Tuple *config_open_tuple = dict_find(iter, KEY_CONFIG_OPEN);
   Tuple *history_tuple = dict_find(iter, KEY_HISTORY_DATA);
+  Tuple *global_max_tuple = dict_find(iter, KEY_GLOBAL_MAX); // Nuovo
+  Tuple *global_min_tuple = dict_find(iter, KEY_GLOBAL_MIN); // Nuovo
   
   if (nick_tuple) {
     snprintf(s_pebble_nickname, sizeof(s_pebble_nickname), "%s", nick_tuple->value->cstring);
+  }
+
+  if (unit_tuple) {
+    snprintf(s_unit_str, sizeof(s_unit_str), "%s", unit_tuple->value->cstring);
   }
 
   if (name_tuple) {
@@ -800,7 +860,42 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
       p = strchr(p, ',');
       if (p) p++;
     }
-    if (s_graph_layer) layer_mark_dirty(s_graph_layer);
+
+    char time_range_str[32];
+    snprintf(time_range_str, sizeof(time_range_str), "LAST %d HOURS", s_history_duration_hours);
+
+    // Variabili per i valori da visualizzare
+    int display_min_val = 0;
+    int display_max_val = 0;
+    bool has_data_to_display = false;
+
+    if (global_max_tuple && global_min_tuple) {
+      display_max_val = global_max_tuple->value->int32;
+      display_min_val = global_min_tuple->value->int32;
+      has_data_to_display = true;
+    }
+
+    // Aggiorna le variabili globali per la scala del grafico
+    if (has_data_to_display) {
+      s_history_visual_min = display_min_val;
+      s_history_visual_max = display_max_val;
+    }
+
+    if (has_data_to_display) {
+      snprintf(s_graph_max_str, sizeof(s_graph_max_str), "%s\nMax: %s%d.%d %s",
+               time_range_str, (display_max_val < 0 && display_max_val > -10) ? "-" : "",
+               display_max_val / 10, abs(display_max_val % 10), s_unit_str);
+      snprintf(s_graph_min_str, sizeof(s_graph_min_str), "Min: %s%d.%d %s",
+               (display_min_val < 0 && display_min_val > -10) ? "-" : "",
+               display_min_val / 10, abs(display_min_val % 10), s_unit_str);
+    } else {
+      snprintf(s_graph_max_str, sizeof(s_graph_max_str), "%s\nNo data", time_range_str);
+      snprintf(s_graph_min_str, sizeof(s_graph_min_str), "No data");
+    }
+
+    if (s_graph_title_layer) text_layer_set_text(s_graph_title_layer, s_graph_max_str);
+    if (s_graph_min_layer) text_layer_set_text(s_graph_min_layer, s_graph_min_str);
+    if (s_graph_layer) layer_mark_dirty(s_graph_layer); // Forza il ridisegno del grafico
   }
 }
 
@@ -1059,7 +1154,7 @@ static void prv_init(void) {
   app_message_register_outbox_sent(outbox_sent_handler);
   app_message_register_outbox_failed(outbox_failed_handler);
   app_message_register_inbox_dropped(inbox_dropped_handler);
-  app_message_open(512, 512); // Aumentato per gestire correttamente i dati storici
+  app_message_open(1024, 1024); // Aumentato ulteriormente per evitare troncamenti su range ampi
 
   // Iscrizione al tap per il toggle
   accel_tap_service_subscribe(accel_tap_handler);

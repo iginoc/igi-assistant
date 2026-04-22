@@ -4,7 +4,7 @@
 
 ### Key Features
 *   **Sensor Monitoring:** Display a specific sensor (e.g., car battery, power usage) directly on the main screen with a visual gauge and large, readable fonts.
-*   **Historical Graphs:** View a line chart of the selected sensor's data for the last 6 hours by simply shaking your wrist.
+*   **Historical Graphs:** View a line chart of the selected sensor's data by shaking your wrist. Features dynamic time ranges, hour markers, and peak-preservation sampling to ensure spikes are never missed.
 *   **Light Control:** Quick menu to toggle selected lights on and off.
 *   **Home Assistant Chat:** Send and receive text messages to Home Assistant (requires `input_text`). Supports voice dictation (on microphone-enabled models) and customizable canned messages.
 *   **Music Control:** Control active media players (Play/Pause, Volume, Next/Prev Track).
@@ -58,6 +58,11 @@ To use all features, add the following to your `configuration.yaml` or create th
 *   **UP/DOWN (Click):** Previous / Next Track.
 *   **UP/DOWN (Long Press):** Volume Up / Down.
 *   **SELECT:** Play / Pause.
+
+**Historical Graph:**
+*   **UP:** Increase time range (e.g., 6h -> 12h -> 18h...).
+*   **DOWN:** Decrease time range (minimum 6h).
+*   **Visuals:** Global Max/Min with decimal precision and red vertical markers for every hour.
 
 ---
 

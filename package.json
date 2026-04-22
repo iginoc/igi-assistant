@@ -1,8 +1,10 @@
 {
   "name": "menu-hassio",
   "author": "Igino",
-  "version": "1.4.0",
-  "keywords": ["pebble-app"],
+  "version": "1.4.1",
+  "keywords": [
+    "pebble-app"
+  ],
   "private": true,
   "dependencies": {},
   "pebble": {

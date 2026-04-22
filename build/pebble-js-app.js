@@ -113,7 +113,9 @@
 	var KEY_MUSIC_TITLE = 13;
 	var KEY_CONFIG_OPEN = 14;
 	var KEY_GET_HISTORY = 15;
-	var KEY_HISTORY_DATA = 16;
+	var KEY_HISTORY_DATA = 16; // Dati campionati per il grafico
+	var KEY_GLOBAL_MAX = 17;   // Valore massimo assoluto del periodo
+	var KEY_GLOBAL_MIN = 18;   // Valore minimo assoluto del periodo
 	
 	// Configurazione Home Assistant (Assicurati che corrispondano a quelli nel file HTML)
 	var haUrl = localStorage.getItem('pebble_ha_url') || ""; 
@@ -243,14 +245,20 @@
 	  });
 	}
 	
-	function updateHistory() {
+	function updateHistory(durationHours = 6) {
 	  var sensorEntity = localStorage.getItem('pebble_sensor_config') || "sensor.auto_batteria_stimata";
 	  var now = new Date();
-	  var start = new Date(now.getTime() - (6 * 60 * 60 * 1000)); // 6 ore fa
-	  var startTimeStr = start.toISOString();
 	
-	  console.log("Fetching history for: " + sensorEntity);
-	  fetch(haUrl + "/api/history/period/" + startTimeStr + "?filter_entity_id=" + sensorEntity, {
+	  var end_time_ms = now.getTime();
+	  var start_time_ms = end_time_ms - (durationHours * 60 * 60 * 1000); 
+	
+	  var start = new Date(start_time_ms);
+	  var end = new Date(end_time_ms);
+	  var startTimeStr = start.toISOString();
+	  var endTimeStr = end.toISOString();
+	
+	  console.log("Fetching history for: " + sensorEntity + " from " + startTimeStr + " to " + endTimeStr);
+	  fetch(haUrl + "/api/history/period/" + startTimeStr + "?filter_entity_id=" + sensorEntity + "&end_time=" + endTimeStr, {
 	    headers: { "Authorization": "Bearer " + haToken, "Content-Type": "application/json" }
 	  })
 	  .then(function(response) {
@@ -261,14 +269,58 @@
 	    if (data && data[0] && data[0].length > 0) {
 	      var history = data[0];
 	      var values = [];
-	      var step = Math.max(1, Math.floor(history.length / 20)); 
-	      for (var i = 0; i < history.length; i += step) {
-	        var val = parseFloat(history[i].state);
-	        if (!isNaN(val)) values.push(Math.round(val));
-	        if (values.length >= 20) break;
+	      var global_max_val = -Infinity;
+	      var global_min_val = Infinity;
+	      var maxIdx = 0;
+	      var minIdx = 0;
+	
+	      // Calcola il massimo e il minimo assoluti dall'intera cronologia
+	      for (var j = 0; j < history.length; j++) {
+	        var current_val = parseFloat(history[j].state);
+	        if (!isNaN(current_val)) {
+	          if (current_val > global_max_val) {
+	            global_max_val = current_val;
+	            maxIdx = j;
+	          }
+	          if (current_val < global_min_val) {
+	            global_min_val = current_val;
+	            minIdx = j;
+	          }
+	        }
+	      }
+	
+	      var numPoints = Math.min(history.length, 20);
+	      var bucketSize = history.length / numPoints;
+	
+	      for (var i = 0; i < numPoints; i++) {
+	        var bucketStart = Math.floor(i * bucketSize);
+	        var bucketEnd = Math.floor((i + 1) * bucketSize);
+	        
+	        // Cerchiamo il valore più estremo (massimo) all'interno di questo bucket
+	        // per assicurarci che i picchi non vengano mai saltati dal campionamento.
+	        var localMax = -Infinity;
+	        var foundVal = false;
+	        
+	        for (var k = bucketStart; k < bucketEnd && k < history.length; k++) {
+	          var v = parseFloat(history[k].state);
+	          if (!isNaN(v)) {
+	            if (v > localMax) localMax = v;
+	            foundVal = true;
+	          }
+	        }
+	        
+	        var valToSend = foundVal ? localMax : 0;
+	        values.push(Math.round(valToSend * 10));
 	      }
 	      var dict = {};
 	      dict[KEY_HISTORY_DATA] = values.join(",");
+	      dict[KEY_GLOBAL_MAX] = Math.round(global_max_val * 10);
+	      dict[KEY_GLOBAL_MIN] = Math.round(global_min_val * 10);
+	      Pebble.sendAppMessage(dict);
+	    } else {
+	      // Se non ci sono dati, invia una stringa vuota per sbloccare la UI
+	      var dict = {};
+	      dict[KEY_HISTORY_DATA] = "";
 	      Pebble.sendAppMessage(dict);
 	    }
 	  })
@@ -459,7 +511,8 @@
 	  }
 	
 	  if (dict[KEY_GET_HISTORY]) {
-	    updateHistory();
+	    var duration = dict[KEY_GET_HISTORY];
+	    updateHistory(duration);
 	  }
 	});
 	
