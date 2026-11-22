@@ -19,6 +19,9 @@
 #define KEY_HISTORY_DATA 16 // Dati campionati per il grafico
 #define KEY_GLOBAL_MAX 17   // Valore massimo assoluto del periodo
 #define KEY_GLOBAL_MIN 18   // Valore minimo assoluto del periodo
+#define KEY_CHAT_USER_COUNT 19
+#define KEY_CHAT_USER_INDEX 20
+#define KEY_CHAT_USER_NAME 21
  
 static Window *s_window;
 static Window *s_menu_window;
@@ -69,6 +72,14 @@ static TextLayer *s_chat_layers[MAX_CHAT_LAYERS];
 static char *s_chat_texts[MAX_CHAT_LAYERS];
 static int s_chat_layer_count = 0;
 static int s_chat_content_height = 0;
+#define MAX_CHAT_USERS 10
+static char s_chat_users[MAX_CHAT_USERS][32];
+static int s_chat_user_count = 0;
+static int s_chat_users_received = 0;
+static bool s_chat_users_loaded = false;
+static char s_selected_chat_user[32] = "";
+static Window *s_chat_user_window;
+static MenuLayer *s_chat_user_menu_layer;
 #if defined(PBL_MICROPHONE)
 static DictationSession *s_dictation_session;
 #endif
@@ -89,6 +100,8 @@ static char s_pebble_nickname[32] = "Pebble";
 
 static void reset_auto_close_timer(void);
 static void auto_close_callback(void *data);
+static void canned_window_load(Window *window);
+static void canned_window_unload(Window *window);
 
 static void send_chat_active(bool active) {
   DictionaryIterator *iter;
@@ -127,9 +140,14 @@ static GColor get_color_for_nickname(char *text) {
 static void add_chat_message(char *new_text) {
   if (!s_chat_scroll_layer) return;
 
-  // Controlla se il messaggio inizia con '>' per allinearlo a destra
-  bool is_me = (new_text[0] == '>');
-  char *text_to_show = is_me ? new_text + 1 : new_text;
+  char own_user_prefix[34];
+  snprintf(own_user_prefix, sizeof(own_user_prefix), "(%s)", s_pebble_nickname);
+  size_t own_user_prefix_len = strlen(own_user_prefix);
+  if (strncmp(new_text, own_user_prefix, own_user_prefix_len) != 0) return;
+
+  bool is_me = false;
+  char *text_to_show = new_text + own_user_prefix_len;
+  if (*text_to_show == ' ') text_to_show++;
   size_t len = strlen(text_to_show);
 
   // Se abbiamo raggiunto il limite, rimuovi il messaggio più vecchio
@@ -160,17 +178,14 @@ static void add_chat_message(char *new_text) {
   char *copy = malloc(len + 1);
   if (copy) {
     strcpy(copy, text_to_show);
-    
-    // Rimuovi il nickname per la visualizzazione
-    char *start_nick = strrchr(copy, '(');
-    char *end_nick = strrchr(copy, ')');
-    if (start_nick && end_nick && end_nick > start_nick) {
-      // Rimuove anche lo spazio precedente se presente
-      if (start_nick > copy && *(start_nick - 1) == ' ') {
-        *(start_nick - 1) = '\0';
-      } else {
-        *start_nick = '\0';
-      }
+
+    char nickname_suffix[36];
+    snprintf(nickname_suffix, sizeof(nickname_suffix), " (%s)", s_pebble_nickname);
+    size_t copy_len = strlen(copy);
+    size_t suffix_len = strlen(nickname_suffix);
+    if (copy_len >= suffix_len && strcmp(copy + copy_len - suffix_len, nickname_suffix) == 0) {
+      copy[copy_len - suffix_len] = '\0';
+      is_me = true;
     }
     
     int16_t width = s_chat_bounds.size.w;
@@ -208,20 +223,22 @@ static void add_chat_message(char *new_text) {
   }
 }
 
+static void send_chat_message(const char *text) {
+  snprintf(s_last_dictation, sizeof(s_last_dictation), "(%s) %s (%s)",
+           s_selected_chat_user, text, s_pebble_nickname);
+  add_chat_message(s_last_dictation);
+
+  DictionaryIterator *iter;
+  if (app_message_outbox_begin(&iter) == APP_MSG_OK) {
+    dict_write_cstring(iter, KEY_SEND_CHAT, s_last_dictation);
+    app_message_outbox_send();
+  }
+}
+
 #if defined(PBL_MICROPHONE)
 static void dictation_session_callback(DictationSession *session, DictationSessionStatus status, char *transcription, void *context) {
   if (status == DictationSessionStatusSuccess) {
-    // Aggiunge il prefisso > e invia
-    snprintf(s_last_dictation, sizeof(s_last_dictation), ">%s (%s)", transcription, s_pebble_nickname);
-    
-    // Aggiorna immediatamente la UI locale
-    add_chat_message(s_last_dictation);
-
-    DictionaryIterator *iter;
-    if (app_message_outbox_begin(&iter) == APP_MSG_OK) {
-      dict_write_cstring(iter, KEY_SEND_CHAT, s_last_dictation);
-      app_message_outbox_send();
-    }
+    send_chat_message(transcription);
     
     // Se la finestra dei messaggi predefiniti è aperta, chiudila per mostrare la chat
     if (s_canned_window && window_stack_get_top_window() == s_canned_window) {
@@ -274,18 +291,55 @@ static void canned_menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_i
   } else {
     // Messaggio predefinito
     char *msg = s_canned_messages[row];
-    
-    snprintf(s_last_dictation, sizeof(s_last_dictation), ">%s (%s)", msg, s_pebble_nickname);
-    add_chat_message(s_last_dictation);
-
-    DictionaryIterator *iter;
-    if (app_message_outbox_begin(&iter) == APP_MSG_OK) {
-      dict_write_cstring(iter, KEY_SEND_CHAT, s_last_dictation);
-      app_message_outbox_send();
-    }
-    
+    send_chat_message(msg);
     window_stack_pop(true);
   }
+}
+
+static uint16_t chat_user_menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void *data) {
+  return s_chat_users_loaded && s_chat_user_count > 0 ? s_chat_user_count : 1;
+}
+
+static void chat_user_menu_draw_row_callback(GContext *ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
+  const char *label = "Caricamento...";
+  if (s_chat_users_loaded) {
+    label = s_chat_user_count > 0 ? s_chat_users[cell_index->row] : "Nessun utente";
+  }
+  menu_cell_basic_draw(ctx, cell_layer, label, NULL, NULL);
+}
+
+static void chat_user_menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
+  if (!s_chat_users_loaded || s_chat_user_count == 0) return;
+
+  snprintf(s_selected_chat_user, sizeof(s_selected_chat_user), "%s", s_chat_users[cell_index->row]);
+  window_stack_remove(s_chat_user_window, true);
+  if (!s_canned_window) {
+    s_canned_window = window_create();
+    window_set_window_handlers(s_canned_window, (WindowHandlers) {
+      .load = canned_window_load,
+      .unload = canned_window_unload,
+    });
+  }
+  window_stack_push(s_canned_window, true);
+}
+
+static void chat_user_window_load(Window *window) {
+  Layer *window_layer = window_get_root_layer(window);
+  GRect bounds = layer_get_bounds(window_layer);
+
+  s_chat_user_menu_layer = menu_layer_create(bounds);
+  menu_layer_set_callbacks(s_chat_user_menu_layer, NULL, (MenuLayerCallbacks){
+    .get_num_rows = chat_user_menu_get_num_rows_callback,
+    .draw_row = chat_user_menu_draw_row_callback,
+    .select_click = chat_user_menu_select_callback,
+  });
+  menu_layer_set_click_config_onto_window(s_chat_user_menu_layer, window);
+  layer_add_child(window_layer, menu_layer_get_layer(s_chat_user_menu_layer));
+}
+
+static void chat_user_window_unload(Window *window) {
+  menu_layer_destroy(s_chat_user_menu_layer);
+  s_chat_user_menu_layer = NULL;
 }
 
 static void canned_window_load(Window *window) {
@@ -309,14 +363,14 @@ static void canned_window_unload(Window *window) {
 }
 
 static void chat_select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  if (!s_canned_window) {
-    s_canned_window = window_create();
-    window_set_window_handlers(s_canned_window, (WindowHandlers) {
-      .load = canned_window_load,
-      .unload = canned_window_unload,
+  if (!s_chat_user_window) {
+    s_chat_user_window = window_create();
+    window_set_window_handlers(s_chat_user_window, (WindowHandlers) {
+      .load = chat_user_window_load,
+      .unload = chat_user_window_unload,
     });
   }
-  window_stack_push(s_canned_window, true);
+  window_stack_push(s_chat_user_window, true);
 }
 
 static void chat_click_config_provider(void *context) {
@@ -795,6 +849,9 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
   Tuple *history_tuple = dict_find(iter, KEY_HISTORY_DATA);
   Tuple *global_max_tuple = dict_find(iter, KEY_GLOBAL_MAX); // Nuovo
   Tuple *global_min_tuple = dict_find(iter, KEY_GLOBAL_MIN); // Nuovo
+  Tuple *chat_user_count_tuple = dict_find(iter, KEY_CHAT_USER_COUNT);
+  Tuple *chat_user_index_tuple = dict_find(iter, KEY_CHAT_USER_INDEX);
+  Tuple *chat_user_name_tuple = dict_find(iter, KEY_CHAT_USER_NAME);
   
   if (nick_tuple) {
     snprintf(s_pebble_nickname, sizeof(s_pebble_nickname), "%s", nick_tuple->value->cstring);
@@ -832,6 +889,24 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 
   if (chat_tuple) {
     add_chat_message(chat_tuple->value->cstring);
+  }
+
+  if (chat_user_count_tuple) {
+    s_chat_user_count = chat_user_count_tuple->value->int32;
+    if (s_chat_user_count > MAX_CHAT_USERS) s_chat_user_count = MAX_CHAT_USERS;
+    s_chat_users_received = 0;
+    s_chat_users_loaded = s_chat_user_count == 0;
+    if (s_chat_user_menu_layer) menu_layer_reload_data(s_chat_user_menu_layer);
+  }
+
+  if (chat_user_index_tuple && chat_user_name_tuple) {
+    int index = chat_user_index_tuple->value->int32;
+    if (index >= 0 && index < s_chat_user_count && index < MAX_CHAT_USERS) {
+      snprintf(s_chat_users[index], sizeof(s_chat_users[index]), "%s", chat_user_name_tuple->value->cstring);
+      if (index >= s_chat_users_received) s_chat_users_received = index + 1;
+      s_chat_users_loaded = s_chat_users_received >= s_chat_user_count;
+      if (s_chat_user_menu_layer) menu_layer_reload_data(s_chat_user_menu_layer);
+    }
   }
 
   if (music_title_tuple) {

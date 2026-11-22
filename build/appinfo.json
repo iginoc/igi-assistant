@@ -17,6 +17,9 @@
     "capabilities": [
         "configurable"
     ],
+    "usesPermissions": [
+        "networking"
+    ],
     "messageKeys": {
         "targetDate": 10000
     },
@@ -62,8 +65,9 @@
     "name": "menu-hassio",
     "shortName": "Menu Hassio",
     "longName": "Menu Hassio",
-    "versionLabel": "1.4",
+    "versionLabel": "1.4.1",
     "companyName": "Igino",
+    "manifestVersion": 2,
     "appKeys": {
         "targetDate": 10000
     }

@@ -26,6 +26,9 @@
     "capabilities": [
       "configurable"
     ],
+    "usesPermissions": [
+      "networking"
+    ],
     "messageKeys": [
       "targetDate"
     ],

@@ -6,7 +6,7 @@ const isSandbox = false;
 
 // Array with absolute file path strings
 const entryFilenames = ["_pkjs_shared_additions.js",
-"/home/igino/pebble/menu-hassio/src/pkjs/index.js"];
+"/home/igino/pebble/igi-assistant/src/pkjs/index.js"];
 
 // folder path string
 const outputPath = "build";
@@ -15,13 +15,13 @@ const outputPath = "build";
 const outputFilename = "pebble-js-app.js";
 
 // Array with absolute folder path strings
-const resolveRoots = ["/home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/common/include",
-"/home/igino/.pebble-sdk/SDKs/current/sdk-core/pebble/common/tools/webpack",
-"/home/igino/.pebble-sdk/SDKs/current/node_modules",
-"/home/igino/pebble/menu-hassio/build/js"];
+const resolveRoots = ["/home/igino/.local/share/pebble-sdk/SDKs/current/sdk-core/pebble/common/include",
+"/home/igino/.local/share/pebble-sdk/SDKs/current/sdk-core/pebble/common/tools/webpack",
+"/home/igino/.local/share/pebble-sdk/SDKs/current/node_modules",
+"/home/igino/pebble/igi-assistant/build/js"];
 
 // Object, { alias1: 'path1', ... }
-const resolveAliases = {"app_package.json": "/home/igino/pebble/menu-hassio/package.json"};
+const resolveAliases = {"app_package.json": "/home/igino/pebble/igi-assistant/package.json"};
 
 // null or Object with key 'sourceMapFilename'
 const sourceMapConfig = {"sourceMapFilename": "pebble-js-app.js.map"};

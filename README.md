@@ -6,7 +6,7 @@
 *   **Sensor Monitoring:** Display a specific sensor (e.g., car battery, power usage) directly on the main screen with a visual gauge and large, readable fonts.
 *   **Historical Graphs:** View a line chart of the selected sensor's data by shaking your wrist. Features dynamic time ranges, hour markers, and peak-preservation sampling to ensure spikes are never missed.
 *   **Light Control:** Quick menu to toggle selected lights on and off.
-*   **Home Assistant Chat:** Send and receive text messages to Home Assistant (requires `input_text`). Supports voice dictation (on microphone-enabled models) and customizable canned messages.
+*   **Home Assistant Chat:** Choose a recipient and send or receive text messages through Home Assistant (requires `input_text` and a `todo` list). Supports voice dictation (on microphone-enabled models) and customizable canned messages.
 *   **Music Control:** Control active media players (Play/Pause, Volume, Next/Prev Track).
 *   **Universal Compatibility:** High-contrast interface with optimized layouts for all Pebble models, including rectangular (Classic, Time, P2) and circular (Pebble Time Round) displays.
 
@@ -22,7 +22,9 @@ To use all features, add the following to your `configuration.yaml` or create th
         max: 255
     ```
 
-2.  **CORS (Important for Configuration):** To allow the Pebble app configuration page to fetch your lights list, you must enable CORS:
+2.  **Chat recipients:** Create the Home Assistant to-do list `todo.utenti_chat` and add each recipient as an active item. The app displays each item's summary before composing a message.
+
+3.  **CORS (Important for Configuration):** To allow the Pebble app configuration page to fetch your lights list, you must enable CORS:
     ```yaml
     http:
       cors_allowed_origins:
@@ -52,7 +54,7 @@ To use all features, add the following to your `configuration.yaml` or create th
 
 **Chat:**
 *   **UP/DOWN:** Scroll through message history.
-*   **SELECT:** Open dictation or canned messages menu.
+*   **SELECT:** Choose a recipient, then open dictation or canned messages.
 
 **Music:**
 *   **UP/DOWN (Click):** Previous / Next Track.

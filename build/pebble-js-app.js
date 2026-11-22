@@ -116,6 +116,9 @@
 	var KEY_HISTORY_DATA = 16; // Dati campionati per il grafico
 	var KEY_GLOBAL_MAX = 17;   // Valore massimo assoluto del periodo
 	var KEY_GLOBAL_MIN = 18;   // Valore minimo assoluto del periodo
+	var KEY_CHAT_USER_COUNT = 19;
+	var KEY_CHAT_USER_INDEX = 20;
+	var KEY_CHAT_USER_NAME = 21;
 	
 	// Configurazione Home Assistant (Assicurati che corrispondano a quelli nel file HTML)
 	var haUrl = localStorage.getItem('pebble_ha_url') || ""; 
@@ -124,6 +127,7 @@
 	var savedLights = [];
 	var chatInterval = null;
 	var lastChatText = null;
+	var MAX_CHAT_USERS = 10;
 	
 	function sendLocalNickname() {
 	  var nickname = localStorage.getItem('pebble_nickname');
@@ -362,6 +366,63 @@
 	  .catch(err => console.log("Error fetching chat: " + err));
 	}
 	
+	function sendNextChatUser(users, index) {
+	  if (index >= users.length) return;
+	
+	  var dict = {};
+	  dict[KEY_CHAT_USER_INDEX] = index;
+	  dict[KEY_CHAT_USER_NAME] = users[index];
+	  Pebble.sendAppMessage(dict, function() {
+	    sendNextChatUser(users, index + 1);
+	  }, function(err) {
+	    console.log("Error sending chat user " + index + ": " + JSON.stringify(err));
+	  });
+	}
+	
+	function sendChatUsers(users) {
+	  var selectedUsers = users.slice(0, MAX_CHAT_USERS);
+	  var dict = {};
+	  dict[KEY_CHAT_USER_COUNT] = selectedUsers.length;
+	  Pebble.sendAppMessage(dict, function() {
+	    sendNextChatUser(selectedUsers, 0);
+	  }, function(err) {
+	    console.log("Error sending chat user count: " + JSON.stringify(err));
+	  });
+	}
+	
+	function updateChatUsers() {
+	  fetch(haUrl + "/api/services/todo/get_items?return_response", {
+	    method: "POST",
+	    headers: { "Authorization": "Bearer " + haToken, "Content-Type": "application/json" },
+	    body: JSON.stringify({ "entity_id": "todo.utenti_chat" })
+	  })
+	  .then(function(response) {
+	    if (!response.ok) throw new Error("Todo user fetch failed: " + response.status);
+	    return response.json();
+	  })
+	  .then(function(data) {
+	    var serviceResponse = data.service_response || data;
+	    var todoList = serviceResponse["todo.utenti_chat"];
+	    var items = Array.isArray(todoList) ? todoList : (todoList && todoList.items);
+	    if (!items && data.attributes) items = data.attributes.items;
+	
+	    var users = [];
+	    if (Array.isArray(items)) {
+	      items.forEach(function(item) {
+	        var name = item.summary || item.name || item.title;
+	        if (name && name.trim() && users.indexOf(name.trim()) === -1) {
+	          users.push(name.trim());
+	        }
+	      });
+	    }
+	    sendChatUsers(users);
+	  })
+	  .catch(function(err) {
+	    console.log("Error fetching chat users: " + err);
+	    sendChatUsers([]);
+	  });
+	}
+	
 	function sendChat(text) {
 	  fetch(haUrl + "/api/services/input_text/set_value", {
 	    method: "POST",
@@ -484,6 +545,7 @@
 	      console.log("Chat mode activated");
 	      lastChatText = null; // Reset per inviare subito il contenuto attuale
 	      updateChat();
+	      updateChatUsers();
 	      if (chatInterval) clearInterval(chatInterval);
 	      chatInterval = setInterval(updateChat, 2000);
 	    } else {
