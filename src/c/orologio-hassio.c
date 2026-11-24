@@ -191,24 +191,27 @@ static void add_chat_message(char *new_text) {
     int16_t width = s_chat_bounds.size.w;
 
     // Crea un nuovo TextLayer per questo messaggio
-    TextLayer *tl = text_layer_create(GRect(0, s_chat_content_height, width, 2000));
+    // Margini orizzontali e altezza extra evitano il taglio di lettere e accenti.
+    int16_t message_width = width - 4;
+    TextLayer *tl = text_layer_create(GRect(2, s_chat_content_height, message_width, 2000));
     text_layer_set_text(tl, copy);
     text_layer_set_font(tl, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
     text_layer_set_text_alignment(tl, is_me ? GTextAlignmentRight : GTextAlignmentLeft);
     text_layer_set_background_color(tl, get_color_for_nickname(new_text));
     text_layer_set_text_color(tl, GColorBlack);
 
-    // Calcola l'altezza necessaria e ridimensiona il layer
+    // Calcola l'altezza necessaria e aggiunge spazio verticale tra le righe.
     GSize size = text_layer_get_content_size(tl);
-    text_layer_set_size(tl, GSize(width, size.h));
-    
+    int16_t message_height = size.h + 6;
+    text_layer_set_size(tl, GSize(message_width, message_height));
+
     scroll_layer_add_child(s_chat_scroll_layer, text_layer_get_layer(tl));
     s_chat_texts[s_chat_layer_count] = copy;
     s_chat_layers[s_chat_layer_count++] = tl;
-    
+
     // Aggiorna offset e altezza totale
-    s_chat_content_height += size.h;
-    
+    s_chat_content_height += message_height;
+
     scroll_layer_set_content_size(s_chat_scroll_layer, GSize(width, s_chat_content_height));
     
     int16_t view_h = s_chat_bounds.size.h;

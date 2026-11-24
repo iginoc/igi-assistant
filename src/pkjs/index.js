@@ -284,7 +284,17 @@ function sendNextChatUser(users, index) {
 }
 
 function sendChatUsers(users) {
-  var selectedUsers = users.slice(0, MAX_CHAT_USERS);
+  var defaultUsers = ["Assistente", "TV"];
+  var mergedUsers = defaultUsers.slice();
+
+  users.forEach(function(user) {
+    var name = (user || "").toString().trim();
+    if (name && mergedUsers.indexOf(name) === -1) {
+      mergedUsers.push(name);
+    }
+  });
+
+  var selectedUsers = mergedUsers.slice(0, MAX_CHAT_USERS);
   var dict = {};
   dict[KEY_CHAT_USER_COUNT] = selectedUsers.length;
   Pebble.sendAppMessage(dict, function() {
